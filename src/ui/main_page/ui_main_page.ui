@@ -31,7 +31,7 @@
      <item row="0" column="0">
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -801,7 +801,7 @@ QLineEdit:hover {
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_13">
+               <widget class="QPushButton" name="save_mods_button">
                 <property name="minimumSize">
                  <size>
                   <width>200</width>
@@ -829,7 +829,7 @@ QLineEdit:hover {
              </layout>
             </item>
             <item row="1" column="0">
-             <widget class="QTableWidget" name="tableWidget_2"/>
+             <widget class="QTableWidget" name="mods_show_table"/>
             </item>
             <item row="0" column="0">
              <layout class="QHBoxLayout" name="horizontalLayout_15">
@@ -846,7 +846,7 @@ QLineEdit:hover {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_6">
+                 <widget class="QLineEdit" name="mods_id">
                   <property name="styleSheet">
                    <string notr="true">QLineEdit {
     border: 1px solid #ccc;
@@ -892,7 +892,7 @@ QLineEdit:hover {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_7">
+                 <widget class="QLineEdit" name="mods_name">
                   <property name="styleSheet">
                    <string notr="true">QLineEdit {
     border: 1px solid #ccc;
@@ -938,7 +938,7 @@ QLineEdit:hover {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_8">
+                 <widget class="QLineEdit" name="mods_bak">
                   <property name="styleSheet">
                    <string notr="true">QLineEdit {
     border: 1px solid #ccc;
@@ -974,7 +974,7 @@ QLineEdit:hover {
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_12">
+                 <widget class="QPushButton" name="add_mods_button">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>

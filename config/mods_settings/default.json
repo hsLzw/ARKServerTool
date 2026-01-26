@@ -1,0 +1,52 @@
+{
+    "1101699": {
+        "name": "聚合物锻造",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/shokos-polymer-forge",
+        "open": false
+    },
+    "950914": {
+        "name": "传送器",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/awesometeleporters/comments",
+        "open": true
+    },
+    "1018599": {
+        "name": "玩家追踪",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/player-tracker",
+        "open": true
+    },
+    "931607": {
+        "name": "新手套件",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/starter-kits",
+        "open": true
+    },
+    "929084": {
+        "name": "更好的锻造",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/better-forges/comments",
+        "open": true
+    },
+    "929800": {
+        "name": "1000堆叠50%减重",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/tg-stacking-mod-1000-50",
+        "open": true
+    },
+    "947033": {
+        "name": "信息望远镜",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/awesomespyglass",
+        "open": true
+    },
+    "936457": {
+        "name": "管理员界面",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/admin-commands",
+        "open": false
+    },
+    "935409": {
+        "name": "自动保存",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/auto-saving/comments",
+        "open": true
+    },
+    "930404": {
+        "name": "墓碑模组",
+        "bak": "https://www.curseforge.com/ark-survival-ascended/mods/death-recovery-mod/comments",
+        "open": true
+    }
+}

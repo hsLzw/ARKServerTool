@@ -8,5 +8,8 @@ class MainPage(MainPage_ServerOpen, MainPage_ServerSet, MainPage_ModsSet):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-        self._bind_events()
+        # 初始化各页面
+        MainPage_ServerOpen.ins_init(self)
+        MainPage_ServerSet.ins_init(self)
+        MainPage_ModsSet.ins_init(self)
 

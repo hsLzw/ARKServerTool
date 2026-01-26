@@ -551,11 +551,11 @@ class Ui_MainPage(object):
 
         self.horizontalLayout_17.addItem(self.horizontalSpacer_14)
 
-        self.pushButton_13 = QPushButton(self.groupBox_4)
-        self.pushButton_13.setObjectName(u"pushButton_13")
-        self.pushButton_13.setMinimumSize(QSize(200, 50))
+        self.save_mods_button = QPushButton(self.groupBox_4)
+        self.save_mods_button.setObjectName(u"save_mods_button")
+        self.save_mods_button.setMinimumSize(QSize(200, 50))
 
-        self.horizontalLayout_17.addWidget(self.pushButton_13)
+        self.horizontalLayout_17.addWidget(self.save_mods_button)
 
         self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -564,10 +564,10 @@ class Ui_MainPage(object):
 
         self.gridLayout_9.addLayout(self.horizontalLayout_17, 2, 0, 1, 1)
 
-        self.tableWidget_2 = QTableWidget(self.groupBox_4)
-        self.tableWidget_2.setObjectName(u"tableWidget_2")
+        self.mods_show_table = QTableWidget(self.groupBox_4)
+        self.mods_show_table.setObjectName(u"mods_show_table")
 
-        self.gridLayout_9.addWidget(self.tableWidget_2, 1, 0, 1, 1)
+        self.gridLayout_9.addWidget(self.mods_show_table, 1, 0, 1, 1)
 
         self.horizontalLayout_15 = QHBoxLayout()
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
@@ -579,9 +579,9 @@ class Ui_MainPage(object):
 
         self.horizontalLayout_16.addWidget(self.label_12)
 
-        self.lineEdit_6 = QLineEdit(self.groupBox_4)
-        self.lineEdit_6.setObjectName(u"lineEdit_6")
-        self.lineEdit_6.setStyleSheet(u"QLineEdit {\n"
+        self.mods_id = QLineEdit(self.groupBox_4)
+        self.mods_id.setObjectName(u"mods_id")
+        self.mods_id.setStyleSheet(u"QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 3px;\n"
 "    padding: 5px;\n"
@@ -599,7 +599,7 @@ class Ui_MainPage(object):
 "    border: 1px solid #999;\n"
 "}")
 
-        self.horizontalLayout_16.addWidget(self.lineEdit_6)
+        self.horizontalLayout_16.addWidget(self.mods_id)
 
         self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -611,9 +611,9 @@ class Ui_MainPage(object):
 
         self.horizontalLayout_16.addWidget(self.label_13)
 
-        self.lineEdit_7 = QLineEdit(self.groupBox_4)
-        self.lineEdit_7.setObjectName(u"lineEdit_7")
-        self.lineEdit_7.setStyleSheet(u"QLineEdit {\n"
+        self.mods_name = QLineEdit(self.groupBox_4)
+        self.mods_name.setObjectName(u"mods_name")
+        self.mods_name.setStyleSheet(u"QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 3px;\n"
 "    padding: 5px;\n"
@@ -631,7 +631,7 @@ class Ui_MainPage(object):
 "    border: 1px solid #999;\n"
 "}")
 
-        self.horizontalLayout_16.addWidget(self.lineEdit_7)
+        self.horizontalLayout_16.addWidget(self.mods_name)
 
         self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -643,9 +643,9 @@ class Ui_MainPage(object):
 
         self.horizontalLayout_16.addWidget(self.label_14)
 
-        self.lineEdit_8 = QLineEdit(self.groupBox_4)
-        self.lineEdit_8.setObjectName(u"lineEdit_8")
-        self.lineEdit_8.setStyleSheet(u"QLineEdit {\n"
+        self.mods_bak = QLineEdit(self.groupBox_4)
+        self.mods_bak.setObjectName(u"mods_bak")
+        self.mods_bak.setStyleSheet(u"QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 3px;\n"
 "    padding: 5px;\n"
@@ -663,17 +663,17 @@ class Ui_MainPage(object):
 "    border: 1px solid #999;\n"
 "}")
 
-        self.horizontalLayout_16.addWidget(self.lineEdit_8)
+        self.horizontalLayout_16.addWidget(self.mods_bak)
 
         self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.horizontalLayout_16.addItem(self.verticalSpacer_8)
 
-        self.pushButton_12 = QPushButton(self.groupBox_4)
-        self.pushButton_12.setObjectName(u"pushButton_12")
-        self.pushButton_12.setMinimumSize(QSize(100, 50))
+        self.add_mods_button = QPushButton(self.groupBox_4)
+        self.add_mods_button.setObjectName(u"add_mods_button")
+        self.add_mods_button.setMinimumSize(QSize(100, 50))
 
-        self.horizontalLayout_16.addWidget(self.pushButton_12)
+        self.horizontalLayout_16.addWidget(self.add_mods_button)
 
 
         self.horizontalLayout_15.addLayout(self.horizontalLayout_16)
@@ -697,7 +697,7 @@ class Ui_MainPage(object):
 
         self.retranslateUi(MainPage)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainPage)
@@ -739,11 +739,11 @@ class Ui_MainPage(object):
         self.pushButton_11.setText(QCoreApplication.translate("MainPage", u"\u5220\u9664\u884c", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainPage", u"\u670d\u52a1\u5668\u6e38\u620f\u914d\u7f6e", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("MainPage", u"\u6a21\u7ec4\u9009\u62e9(\u81ea\u884c\u524d\u5f80\u641c\u7d22\u6a21\u7ec4: https://www.curseforge.com/ark-survival-ascended/search?page=1&pageSize=20)", None))
-        self.pushButton_13.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58\u6a21\u7ec4\u9009\u4e2d", None))
+        self.save_mods_button.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58\u6a21\u7ec4\u9009\u4e2d", None))
         self.label_12.setText(QCoreApplication.translate("MainPage", u"\u6a21\u7ec4ID\uff1a", None))
         self.label_13.setText(QCoreApplication.translate("MainPage", u"\u6a21\u7ec4\u540d\u79f0\uff1a", None))
         self.label_14.setText(QCoreApplication.translate("MainPage", u"\u5907\u6ce8\uff1a", None))
-        self.pushButton_12.setText(QCoreApplication.translate("MainPage", u"\u6dfb\u52a0\u6a21\u7ec4\u4fe1\u606f", None))
+        self.add_mods_button.setText(QCoreApplication.translate("MainPage", u"\u6dfb\u52a0\u6a21\u7ec4\u4fe1\u606f", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainPage", u"\u6a21\u7ec4\u914d\u7f6e", None))
     # retranslateUi
 
