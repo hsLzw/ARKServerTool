@@ -28,7 +28,7 @@ class MainPage_ModsSet(BasePage, Ui_MainPage):
         """初始化UI控件状态"""
         # 设置表格为4列
         self.mods_show_table.setColumnCount(4)
-        self.mods_show_table.setHorizontalHeaderLabels(["ID", "Name", "Description", "Enabled"])
+        self.mods_show_table.setHorizontalHeaderLabels(["模组ID(Mods ID)", "模组名称(Mods Name)", "备注(Mods Desc)", "启用(Enabled)"])
 
         # 表格行为设置
         self.mods_show_table.setSelectionBehavior(QAbstractItemView.SelectRows)

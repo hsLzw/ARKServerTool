@@ -31,11 +31,11 @@
      <item row="0" column="0">
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>启动页面</string>
+         <string>启动页面(Run)</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -43,7 +43,7 @@
            <item>
             <widget class="QGroupBox" name="groupBox">
              <property name="title">
-              <string>启动参数</string>
+              <string>启动参数(Run Params)</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_4">
               <item row="0" column="0">
@@ -76,7 +76,7 @@
                      </size>
                     </property>
                     <property name="text">
-                     <string>点击选择服务器根目录</string>
+                     <string>点击选择服务器根目录(Choose Server Root)</string>
                     </property>
                    </widget>
                   </item>
@@ -123,7 +123,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QCheckBox" name="open_param_be">
                     <property name="text">
-                     <string>开启BattlEye</string>
+                     <string>开启BattlEye(Open BE)</string>
                     </property>
                    </widget>
                   </item>
@@ -143,7 +143,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QCheckBox" name="open_param_mods">
                     <property name="text">
-                     <string>开启模组</string>
+                     <string>开启模组(Open Mods)</string>
                     </property>
                    </widget>
                   </item>
@@ -163,7 +163,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QCheckBox" name="checkBox">
                     <property name="text">
-                     <string>多通世界</string>
+                     <string>多通世界(More World Open)</string>
                     </property>
                    </widget>
                   </item>
@@ -194,7 +194,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QLabel" name="label_2">
                     <property name="text">
-                     <string>服务器密码：</string>
+                     <string>服务器密码(Server Pwd)：</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -252,7 +252,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QLabel" name="label_3">
                     <property name="text">
-                     <string>管理员密码：</string>
+                     <string>管理员密码(Admin Pwd)：</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -310,7 +310,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QLabel" name="label_4">
                     <property name="text">
-                     <string>单地图最大人数：</string>
+                     <string>单地图最大人数(MaxPlayer Count)：</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -372,7 +372,7 @@ QSpinBox:hover {
                   <item>
                    <widget class="QLabel" name="label_7">
                     <property name="text">
-                     <string>多通存档ID：</string>
+                     <string>多通存档ID(Cluster ID)：</string>
                     </property>
                    </widget>
                   </item>
@@ -443,7 +443,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QLabel" name="label_8">
                     <property name="text">
-                     <string>多通数据路径：</string>
+                     <string>多通数据路径(Cluster Path)：</string>
                     </property>
                    </widget>
                   </item>
@@ -529,7 +529,7 @@ QLineEdit:hover {
            <item>
             <widget class="QGroupBox" name="groupBox_2">
              <property name="title">
-              <string>多通世界设置</string>
+              <string>多通世界设置(More World Settings)</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_5">
               <item row="0" column="0">
@@ -544,21 +544,21 @@ QLineEdit:hover {
                     <item>
                      <widget class="QPushButton" name="pushButton_4">
                       <property name="text">
-                       <string>删除选中</string>
+                       <string>删除选中(Delete Choose)</string>
                       </property>
                      </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="pushButton_5">
                       <property name="text">
-                       <string>保存修改</string>
+                       <string>保存修改(Save Change)</string>
                       </property>
                      </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="pushButton_6">
                       <property name="text">
-                       <string>添加新世界配置</string>
+                       <string>添加新世界配置(Add New World)</string>
                       </property>
                      </widget>
                     </item>
@@ -608,7 +608,7 @@ QLineEdit:hover {
                 </size>
                </property>
                <property name="text">
-                <string>启动</string>
+                <string>启动(RUN)</string>
                </property>
               </widget>
              </item>
@@ -633,7 +633,7 @@ QLineEdit:hover {
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>服务器游戏配置</string>
+         <string>服务器游戏配置(GameSettings)</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="0">
@@ -651,7 +651,7 @@ QLineEdit:hover {
                   <item>
                    <widget class="QLabel" name="label_11">
                     <property name="text">
-                     <string>选择配置:</string>
+                     <string>选择配置(Choose config):</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -681,21 +681,21 @@ QLineEdit:hover {
                   <item>
                    <widget class="QPushButton" name="pushButton_7">
                     <property name="text">
-                     <string>新增默认配置</string>
+                     <string>新增默认配置(Add Config)</string>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_8">
                     <property name="text">
-                     <string>保存</string>
+                     <string>保存(Save Config/Change)</string>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_9">
                     <property name="text">
-                     <string>导入配置</string>
+                     <string>导入配置(Import Config)</string>
                     </property>
                    </widget>
                   </item>
@@ -724,14 +724,14 @@ QLineEdit:hover {
                     <item>
                      <widget class="QPushButton" name="pushButton_10">
                       <property name="text">
-                       <string>新增一行</string>
+                       <string>新增一行(Add a row)</string>
                       </property>
                      </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="pushButton_11">
                       <property name="text">
-                       <string>删除行</string>
+                       <string>删除行(Delete row)</string>
                       </property>
                      </widget>
                     </item>
@@ -776,7 +776,7 @@ QLineEdit:hover {
        </widget>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
-         <string>模组配置</string>
+         <string>模组配置(Mods Settings)</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_8">
          <item row="0" column="0">
@@ -809,7 +809,7 @@ QLineEdit:hover {
                  </size>
                 </property>
                 <property name="text">
-                 <string>保存模组选中</string>
+                 <string>保存模组选中(Save Config)</string>
                 </property>
                </widget>
               </item>
@@ -838,7 +838,7 @@ QLineEdit:hover {
                 <item>
                  <widget class="QLabel" name="label_12">
                   <property name="text">
-                   <string>模组ID：</string>
+                   <string>模组ID(Mods ID)：</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -884,7 +884,7 @@ QLineEdit:hover {
                 <item>
                  <widget class="QLabel" name="label_13">
                   <property name="text">
-                   <string>模组名称：</string>
+                   <string>模组名称(Name)：</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -930,7 +930,7 @@ QLineEdit:hover {
                 <item>
                  <widget class="QLabel" name="label_14">
                   <property name="text">
-                   <string>备注：</string>
+                   <string>备注(Desc)：</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -982,7 +982,7 @@ QLineEdit:hover {
                    </size>
                   </property>
                   <property name="text">
-                   <string>添加模组信息</string>
+                   <string>添加(Add)</string>
                   </property>
                  </widget>
                 </item>
