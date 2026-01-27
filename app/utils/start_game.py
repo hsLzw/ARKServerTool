@@ -81,7 +81,7 @@ class OpenServer:
             *****************************''')
             return
         # 找到了文件，读取文件
-        config = configparser.ConfigParser()
+        config = configparser.ConfigParser(strict=False)
         config.optionxform = str
         if os.path.exists(settings_file):
             with open(settings_file, 'r', encoding='utf-8') as f:

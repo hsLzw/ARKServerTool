@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QMessageBox
 
 from app.models.ini_settings import ins_server_setting
 from app.models.json_setting import ins_world_info
+from app.models.log_data import ins_tool_logger
 from app.ui_utils.main_page.server_open_page.tab_server_open_widget import ServerOpen_Widget
 from app.utils.start_game import OpenServer
 from PySide6.QtCore import QThread, Signal, QObject
@@ -19,12 +20,14 @@ class ServerWorker(QObject):
     reset_button = Signal(bool)
 
     def run(self):
+        ins_tool_logger.add_log("Start...")
         try:
             OpenServer.start()  # 执行耗时操作
         except Exception as e:
-            print(traceback.format_exc())
-
-        self.reset_button.emit(True)
+            ins_tool_logger.add_log(traceback.format_exc())
+        finally:
+            self.reset_button.emit(True)
+        ins_tool_logger.add_log("End...")
 
 class MainPage_ServerOpen(ServerOpen_Widget):
 
@@ -33,11 +36,13 @@ class MainPage_ServerOpen(ServerOpen_Widget):
         self.choose_root = ""
         self.choose_cluster_path = ""
         self.worker_thread = None
+        self.worker = None
 
     def ins_init(self):
         MainPage_ServerOpen.widget_init(self)
         self.__init_data()
         self.__bind_events()
+
 
 
     def __bind_events(self):
@@ -324,17 +329,16 @@ class MainPage_ServerOpen(ServerOpen_Widget):
                 self.__set_run_button(True)
                 return
 
-        if self.worker_thread and self.worker_thread.isRunning():
-            self.message_box(self, "服务器正在启动中，请稍候(Server is opening, please wait...)")
-            self.__set_run_button(True)
+        if self.worker_thread and not self.worker_thread.isFinished():
+            self.message_box("服务器正在启动中，请稍候(Server is opening, please wait...)")
             return
         # 服务器开启
         self.worker_thread = QThread()
+        self.worker_thread.finished.connect(lambda: self.worker_thread.deleteLater())
         self.worker = ServerWorker()
         self.worker_thread.started.connect(self.worker.run)
         self.worker.reset_button.connect(self.__set_run_button)
         self.worker.moveToThread(self.worker_thread)
-        # 启动线程
         self.worker_thread.start()
         self.main_tabWidget.setCurrentIndex(3)
 
