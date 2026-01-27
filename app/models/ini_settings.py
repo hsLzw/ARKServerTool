@@ -69,7 +69,6 @@ class BaseSetting:
         """删除配置项"""
         try:
             self.config.remove_option(section, key)
-            self._save_config()
         except configparser.NoSectionError:
             pass
 
@@ -83,6 +82,9 @@ class BaseSetting:
         if self.config.has_section(section):
             return dict(self.config.items(section))
         return {}
+
+    def get_all_section(self):
+        return self.config.sections()
 
     def clear(self) -> None:
         """清空配置"""

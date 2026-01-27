@@ -1,5 +1,7 @@
 import os
 import re
+import traceback
+
 from PySide6.QtCore import Signal
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem, QInputDialog, QHeaderView
@@ -24,8 +26,8 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
     def __setup_ui(self):
         """初始化UI设置(Initialize UI settings)"""
         # 设置表格属性(Set table properties)
-        self.wc_show_world_setting.setColumnCount(3)
-        self.wc_show_world_setting.setHorizontalHeaderLabels(["配置项(Key)", "说明(Description)", "值(Value)"])
+        self.wc_show_world_setting.setColumnCount(4)
+        self.wc_show_world_setting.setHorizontalHeaderLabels(["归属项(Section)", "配置项(Key)", "说明(Description)", "值(Value)"])
         self.wc_show_world_setting.horizontalHeader().setStretchLastSection(True)
 
         # 设置所有列内容靠左对齐(Set all columns left-aligned)
@@ -136,40 +138,48 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
         """加载当前选中的配置文件数据到表格(Load selected config data to table)"""
         # 先清空表格
         self.wc_show_world_setting.setRowCount(0)
-        #
-        # 获取ServerSettings和Tip数据(Get ServerSettings and Tip data)
-        server_settings = ins_game_setting.get_section("ServerSettings")
-        tips = ins_game_setting.get_section("Tip")
+        # 获取全部section
+        all_section = ins_game_setting.get_all_section()
+        for section_name in all_section:
+            if "_ARKToolTip" in section_name:
+                continue
+            # 获取ServerSettings和Tip数据(Get ServerSettings and Tip data)
+            server_settings = ins_game_setting.get_section(section_name)
+            tips = ins_game_setting.get_section(f"{section_name}_ARKToolTip")
 
-        # 如果ServerSettings为空，则不显示任何内容
-        if not server_settings:
-            return
+            # 如果ServerSettings为空，则不显示任何内容
+            if not server_settings:
+                continue
 
-        # 确保Tip部分存在且与ServerSettings键一致
-        if not tips:
-            tips = {key: f"请添加{key}的说明(Please add description for {key})"
-                    for key in server_settings.keys()}
+            # 确保Tip部分存在且与ServerSettings键一致
+            if not tips:
+                tips = {key: f"请添加{key}的说明(Please add description for {key})"
+                        for key in server_settings.keys()}
 
-        # 填充表格(Populate table)
-        for key, value in server_settings.items():
-            row_position = self.wc_show_world_setting.rowCount()
-            self.wc_show_world_setting.insertRow(row_position)
+            # 填充表格(Populate table)
+            for key, value in server_settings.items():
+                row_position = self.wc_show_world_setting.rowCount()
+                self.wc_show_world_setting.insertRow(row_position)
 
-            # 配置项(Key)
-            key_item = QTableWidgetItem(key)
-            key_item.setFlags(key_item.flags() & ~Qt.ItemIsEditable)  # 不可编辑(Non-editable)
-            key_item.setTextAlignment(Qt.AlignLeft)
-            self.wc_show_world_setting.setItem(row_position, 0, key_item)
+                # 归属项(Section)
+                section_item = QTableWidgetItem(section_name)
+                section_item.setTextAlignment(Qt.AlignLeft)
+                self.wc_show_world_setting.setItem(row_position, 0, section_item)
 
-            # 说明(Description)
-            tip_item = QTableWidgetItem(tips.get(key, ""))
-            tip_item.setTextAlignment(Qt.AlignLeft)
-            self.wc_show_world_setting.setItem(row_position, 1, tip_item)
+                # 配置项(Key)
+                key_item = QTableWidgetItem(key)
+                key_item.setTextAlignment(Qt.AlignLeft)
+                self.wc_show_world_setting.setItem(row_position, 1, key_item)
 
-            # 值(Value)
-            value_item = QTableWidgetItem(value)
-            value_item.setTextAlignment(Qt.AlignLeft)
-            self.wc_show_world_setting.setItem(row_position, 2, value_item)
+                # 说明(Description)
+                tip_item = QTableWidgetItem(tips.get(key, ""))
+                tip_item.setTextAlignment(Qt.AlignLeft)
+                self.wc_show_world_setting.setItem(row_position, 2, tip_item)
+
+                # 值(Value)
+                value_item = QTableWidgetItem(value)
+                value_item.setTextAlignment(Qt.AlignLeft)
+                self.wc_show_world_setting.setItem(row_position, 3, value_item)
 
     def __on_config_changed(self, config_name):
         """当下拉框选择改变时(When dropdown selection changes)"""
@@ -238,16 +248,21 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
 
             # 收集表格中的数据(Collect data from table)
             for row in range(self.wc_show_world_setting.rowCount()):
-                key = self.wc_show_world_setting.item(row, 0).text()
-                tip = self.wc_show_world_setting.item(row, 1).text()
-                value = self.wc_show_world_setting.item(row, 2).text()
+                section = self.wc_show_world_setting.item(row, 0).text()
+                key = self.wc_show_world_setting.item(row, 1).text()
+                tip = self.wc_show_world_setting.item(row, 2).text()
+                value = self.wc_show_world_setting.item(row, 3).text()
 
-                server_settings[key] = value
-                tips[key] = tip
+                server_settings.setdefault(section, {})
+                tips.setdefault(f"{section}_ARKToolTip", {})
 
-            # 更新到配置(Update to config)
-            ins_game_setting.update_section("ServerSettings", server_settings)
-            ins_game_setting.update_section("Tip", tips)
+                server_settings[section][key] = value
+                tips[f"{section}_ARKToolTip"][key] = tip
+
+            for section in server_settings.keys():
+                # 更新到配置(Update to config)
+                ins_game_setting.update_section(section, server_settings[section])
+                ins_game_setting.update_section(f"{section}_ARKToolTip", tips[f"{section}_ARKToolTip"])
 
             self.message_box(
                 "配置已保存!\n(Config saved successfully!)"
@@ -256,26 +271,32 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
             self.message_box(
                 f"保存失败: {str(e)}\n(Save failed: {str(e)})"
             )
+            print(traceback.format_exc())
 
     def __on_add_row(self):
         """添加新行(Add new row)"""
         row_position = self.wc_show_world_setting.rowCount()
         self.wc_show_world_setting.insertRow(row_position)
 
+        # 归属项(Section)
+        section_item = QTableWidgetItem("")
+        section_item.setTextAlignment(Qt.AlignLeft)
+        self.wc_show_world_setting.setItem(row_position, 0, section_item)
+
         # 配置项(Key)
         key_item = QTableWidgetItem("")
         key_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 0, key_item)
+        self.wc_show_world_setting.setItem(row_position, 1, key_item)
 
         # 说明(Description)
         tip_item = QTableWidgetItem("")
         tip_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 1, tip_item)
+        self.wc_show_world_setting.setItem(row_position, 2, tip_item)
 
         # 值(Value)
         value_item = QTableWidgetItem("")
         value_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 2, value_item)
+        self.wc_show_world_setting.setItem(row_position, 3, value_item)
 
         # 滚动到最后一行(Scroll to bottom)
         self.wc_show_world_setting.scrollToBottom()
@@ -295,6 +316,14 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
                 "每次只能删除一行!\n(Can only delete one row at a time!)"
             )
             return
-
         row = selected_rows[0].row()
+        # 获取section和key
+        section = self.wc_show_world_setting.item(row, 0).text()
+        key = self.wc_show_world_setting.item(row, 1).text()
+        # tip
+        tip_section = f"{section}_ARKToolTip"
+        # 删除
+        ins_game_setting.delete(section, key)
+        ins_game_setting.delete(tip_section, key)
+
         self.wc_show_world_setting.removeRow(row)

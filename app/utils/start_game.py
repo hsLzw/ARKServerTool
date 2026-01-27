@@ -32,6 +32,7 @@ class OpenServer:
 
             cls._log_server_startup(world_id, world_data)
             command = cls._build_server_command(world_id, world_data, server_exe)
+            cls._write_game_user_settings()
             cls._launch_server(world_id, command)
 
         cls._log_startup_completion()
@@ -55,6 +56,60 @@ class OpenServer:
             ins_server_setting.root_path,
             "ShooterGame", "Binaries", "Win64", "ArkAscendedServer.exe"
         )
+
+    @classmethod
+    def _get_server_settings_file(cls) -> str:
+        """获取服务器配置文件路径"""
+        return os.path.join(
+            ins_server_setting.root_path,
+            "ShooterGame", "Saved", "Config", "WindowsServer", "GameUserSettings.ini"
+        )
+
+
+    @classmethod
+    def _write_game_user_settings(cls):
+        '''将非serversettings的模组内容写入Config'''
+        settings_file = cls._get_server_settings_file()
+        if not os.path.exists(settings_file):
+            cls._log('''
+            *****************************
+            注意，无法找到GameUserSettings.ini, 可能这是你首次启动游戏，无法正常运行游戏，请关闭所有服务器并重新启动
+            GameUserSettings.ini将会在首次启动服务器exe程序后进行创建，若您是首次启动，重启即可。
+            
+            Warning: Could not locate GameUserSettings.ini. This may be your first time launching the game. The game cannot run properly under these conditions. Please shut down all servers and restart.
+            GameUserSettings.ini will be automatically created during the first launch of the server executable. If this is your first launch, simply restart the application.
+            *****************************''')
+            return
+        # 找到了文件，读取文件
+        config = configparser.ConfigParser()
+        config.optionxform = str
+        if os.path.exists(settings_file):
+            with open(settings_file, 'r', encoding='utf-8') as f:
+                config.read_file(f)
+        # 获取服务器配置中的全部内容
+        all_section = ins_game_setting.get_all_section()
+        for section_name in all_section:
+            if "_ARKToolTip" in section_name:
+                continue
+            # ServerSettings走参数
+            if section_name == "ServerSettings":
+                continue
+            # 获取ServerSettings数据
+            section_data = ins_game_setting.get_section(section_name)
+            # 空section跳过
+            if not section_data:
+                continue
+            # 如果section不存在则创建
+            if not config.has_section(section_name):
+                config.add_section(section_name)
+            # 合并键值对
+            for key, value in section_data.items():
+                config[section_name][key] = value
+        # 写入文件
+        with open(settings_file, 'w', encoding="utf-8") as f:
+            config.write(f)
+
+        return True
 
     @classmethod
     def _build_server_command(cls, world_id: str, world_data: Dict[str, Any], server_exe: str) -> str:
