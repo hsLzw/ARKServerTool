@@ -4,6 +4,8 @@ from typing import Tuple, Optional, Dict
 from PySide6.QtWidgets import (QDialog, QFileDialog, QTableWidgetItem,
                                QHeaderView, QMessageBox, QTableWidget, QComboBox)
 from PySide6.QtCore import Qt
+
+from app.models.ini_settings import ins_server_setting
 from app.models.json_setting import ins_world_info
 from app.ui_utils.base_page.base_page import BasePage
 from src.ui.main_page.ui_main_page import Ui_MainPage
@@ -91,19 +93,21 @@ class ServerOpen_Widget(BasePage, Ui_MainPage):
     def __setup_ui(self):
         """Initialize UI components"""
         # Set table properties
-        self.choose_world_show.setColumnCount(6)  # 新增一列
+        self.choose_world_show.setColumnCount(7)  # 新增一列
         self.choose_world_show.setHorizontalHeaderLabels([
-            "地图ID(Map ID)",
-            "地图名称(Map Name)",
-            "游戏端口(Game Port)",
-            "RCON端口(RCON Port)",
-            "是否启用(Enabled)",
-            "世界配置(World Config)"  # 新增列标题
+            "地图ID\n(MapID)",
+            "地图名称\n(MapName)",
+            "游戏端口\n(GamePort)",
+            "RCON端口\n(RCONPort)",
+            "是否启用\n(Enabled)",
+            "世界配置\n(WorldConfig)",
+            "服务器名称\n(SessionName)"
         ])
 
         # 设置表头居中
         header = self.choose_world_show.horizontalHeader()
         header.setDefaultAlignment(Qt.AlignCenter)
+
 
         # 设置所有列内容居中
         for col in range(self.choose_world_show.columnCount()):
@@ -176,6 +180,11 @@ class ServerOpen_Widget(BasePage, Ui_MainPage):
             # 将combobox放入表格
             self.choose_world_show.setCellWidget(row_position, 5, combo)
 
+
+            session_item = QTableWidgetItem(str(world_data.get('session_name', '')))
+            session_item.setTextAlignment(Qt.AlignCenter)
+            self.choose_world_show.setItem(row_position, 6, session_item)
+
     def __delete_selected_world(self):
         """Delete the selected world from the table (not saved until save button clicked)"""
         selected_rows = self.choose_world_show.selectionModel().selectedRows()
@@ -242,6 +251,10 @@ class ServerOpen_Widget(BasePage, Ui_MainPage):
         combo.setCurrentIndex(0)  # 默认选择default
         combo.currentTextChanged.connect(lambda text, row=row_position: self.__update_world_config(text, row))
         self.choose_world_show.setCellWidget(row_position, 5, combo)
+
+
+        session_item = QTableWidgetItem("")
+        self.choose_world_show.setItem(row_position, 6, session_item)
 
         self.message_box(
             "已添加新行，请填写信息后点击保存! (New row added, please fill in information and click save!)",
@@ -320,6 +333,7 @@ class ServerOpen_Widget(BasePage, Ui_MainPage):
                 port_str = self.choose_world_show.item(row, 2).text().strip()
                 rcon_port_str = self.choose_world_show.item(row, 3).text().strip()
                 enabled = self.choose_world_show.item(row, 4).checkState() == Qt.Checked
+                session_str = self.choose_world_show.item(row, 6).text().strip()
 
                 # 获取世界配置
                 combo = self.choose_world_show.cellWidget(row, 5)
@@ -338,12 +352,21 @@ class ServerOpen_Widget(BasePage, Ui_MainPage):
                 rcon_port = int(rcon_port_str)
                 existing_rcon_ports.add(rcon_port)
 
+                # 如果没有session_str
+                if not session_str:
+                    if ins_server_setting.server_session_name:
+                        session_str = ins_server_setting.server_session_name + "_" + world_id
+                    else:
+                        session_str = "ARK_SERVER_" + world_id
+                    self.choose_world_show.item(row, 6).setText(session_str)
+
                 updated_worlds[world_id] = {
                     'name': world_name,
                     'port': port,
                     'rcon_port': rcon_port,
                     'open': enabled,
-                    'world_set': world_config  # 新增的世界配置字段
+                    'world_set': world_config,
+                    "session_name": session_str,
                 }
 
             # Second pass: update ins_world_info if all validations passed

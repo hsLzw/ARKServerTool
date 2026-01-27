@@ -62,7 +62,8 @@ class OpenServer:
         world_params = cls._get_world_config(world_data["world_set"])
         server_params = cls._get_server_params(
             world_data["port"],
-            world_data["rcon_port"]
+            world_data["rcon_port"],
+            world_data["session_name"]
         )
         extra_params = cls._get_extra_params()
         mods_params = cls._get_mods_params()
@@ -136,13 +137,13 @@ class OpenServer:
         return "?".join(f"{k}={v}" for k, v in server_settings.items())
 
     @classmethod
-    def _get_server_params(cls, port: int, rcon_port: int) -> str:
+    def _get_server_params(cls, port: int, rcon_port: int, session_name: str) -> str:
         """获取服务器基本参数"""
         return (
             f"Port={port}?"
             f"RCONPort={rcon_port}?"
             f"MaxPlayers={ins_server_setting.max_player}?"
-            f"SessionName={ins_server_setting.server_session_name}?"
+            f"SessionName={session_name}?"
             f"ServerPassword={ins_server_setting.server_pwd}?"
             f"ServerAdminPassword={ins_server_setting.admin_pwd}"
         )
