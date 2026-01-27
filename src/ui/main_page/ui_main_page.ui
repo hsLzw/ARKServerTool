@@ -31,7 +31,7 @@
      <item row="0" column="0">
       <widget class="QTabWidget" name="main_tabWidget">
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -784,7 +784,7 @@ QPushButton:hover {
          <item row="1" column="0">
           <widget class="QLabel" name="label_17">
            <property name="text">
-            <string>当世界配置不完全一样时，防止配置覆盖，启动世界的间隔是1分钟。</string>
+            <string>当世界配置不完全一样时，防止配置覆盖，启动世界的间隔是1分钟。免费软件。Git地址:https://github.com/hsLzw/ARKServerTool/blob/main/README.md</string>
            </property>
           </widget>
          </item>

@@ -866,7 +866,7 @@ class Ui_MainPage(object):
 
         self.retranslateUi(MainPage)
 
-        self.main_tabWidget.setCurrentIndex(3)
+        self.main_tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainPage)
@@ -905,7 +905,7 @@ class Ui_MainPage(object):
         self.more_world_save.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58\u4fee\u6539(Save Change)", None))
         self.more_world_add.setText(QCoreApplication.translate("MainPage", u"\u6dfb\u52a0\u65b0\u4e16\u754c\u914d\u7f6e(Add New World)", None))
         self.run_button.setText(QCoreApplication.translate("MainPage", u"\u542f\u52a8(RUN)", None))
-        self.label_17.setText(QCoreApplication.translate("MainPage", u"\u5f53\u4e16\u754c\u914d\u7f6e\u4e0d\u5b8c\u5168\u4e00\u6837\u65f6\uff0c\u9632\u6b62\u914d\u7f6e\u8986\u76d6\uff0c\u542f\u52a8\u4e16\u754c\u7684\u95f4\u9694\u662f1\u5206\u949f\u3002", None))
+        self.label_17.setText(QCoreApplication.translate("MainPage", u"\u5f53\u4e16\u754c\u914d\u7f6e\u4e0d\u5b8c\u5168\u4e00\u6837\u65f6\uff0c\u9632\u6b62\u914d\u7f6e\u8986\u76d6\uff0c\u542f\u52a8\u4e16\u754c\u7684\u95f4\u9694\u662f1\u5206\u949f\u3002\u514d\u8d39\u8f6f\u4ef6\u3002Git\u5730\u5740:https://github.com/hsLzw/ARKServerTool/blob/main/README.md", None))
         self.label_18.setText(QCoreApplication.translate("MainPage", u"When the world configurations are not exactly the same, to prevent configuration overwriting, the interval for starting the world is 1 minute.", None))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.tab), QCoreApplication.translate("MainPage", u"\u542f\u52a8\u9875\u9762(Run)", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainPage", u"\u591a\u914d\u7f6e\u8bbe\u5b9a(\u8bbe\u5b9a\u90e8\u5206\u9879\uff0c\u672a\u5728\u6b64\u914d\u7f6e\u7684\u9879\u5c06\u4f7f\u7528\u6e38\u620f\u7684\u9ed8\u8ba4\u8bbe\u5b9a)", None))
