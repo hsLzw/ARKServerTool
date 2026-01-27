@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 
-from app.models.mods_setting import ins_mods_setting
+from app.models.json_setting import ins_mods_setting
 from app.ui_utils.base_page.base_page import BasePage
 from src.ui.main_page.ui_main_page import Ui_MainPage
 
@@ -112,7 +112,7 @@ class MainPage_ModsSet(BasePage, Ui_MainPage):
         self.mods_bak.clear()
 
         # 自动保存
-        self.__on_save_mods()
+        # self.__on_save_mods()
 
     def __on_save_mods(self):
         """保存所有修改（全量更新）"""

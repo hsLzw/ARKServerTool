@@ -1,0 +1,37 @@
+{
+    "TheIsland_WP": {
+        "name": "孤岛",
+        "port": 7777,
+        "rcon_port": 27020,
+        "open": true,
+        "world_set": "default"
+    },
+    "ScorchedEarth_WP": {
+        "name": "焦土",
+        "port": 7778,
+        "rcon_port": 27021,
+        "open": false,
+        "world_set": "default"
+    },
+    "Aberration_WP": {
+        "name": "畸变",
+        "port": 7779,
+        "rcon_port": 27022,
+        "open": false,
+        "world_set": "default"
+    },
+    "Extinction_WP": {
+        "name": "灭绝",
+        "port": 7780,
+        "rcon_port": 27023,
+        "open": false,
+        "world_set": "default"
+    },
+    "Genesis_WP": {
+        "name": "创世纪1",
+        "port": 7781,
+        "rcon_port": 27024,
+        "open": false,
+        "world_set": "default"
+    }
+}

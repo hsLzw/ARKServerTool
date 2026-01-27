@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QDialog, QMessageBox
+from PySide6.QtWidgets import QDialog, QMessageBox, QInputDialog
 from PySide6.QtCore import Qt
 
 
@@ -8,7 +8,7 @@ class BasePage(QDialog):
 
     def message_box(self,
                     content="",
-                    title="",
+                    title="提示",
                     button_yes_text="是",
                     button_no_text="",
                     message_type=QMessageBox.Information,
@@ -29,9 +29,9 @@ class BasePage(QDialog):
             default_button (QMessageBox.StandardButton): 默认选中按钮
 
         返回:
-            int: 用户点击的按钮值
-                - QMessageBox.Yes/QMessageBox.Ok: 确认
-                - QMessageBox.No/QMessageBox.Cancel: 取消（当button_no_text不为空时）
+            bool:
+                - True: 用户点击了确认按钮 (Yes/OK)
+                - False: 用户点击了取消按钮 (No/Cancel)
         """
         msg_box = QMessageBox(self)
         msg_box.setWindowTitle(title)
@@ -53,4 +53,18 @@ class BasePage(QDialog):
         # 设置窗口模态
         msg_box.setWindowModality(Qt.ApplicationModal)
 
-        return msg_box.exec()
+        # 执行消息框并返回布尔结果
+        result = msg_box.exec()
+        return result == QMessageBox.Yes or result == QMessageBox.Ok
+
+
+    def input_dialog(self, title, label, default_text=""):
+
+        new_name, ok = QInputDialog.getText(
+            self,
+            "复制配置(Copy Config)",
+            "请输入新配置名称(不需要.ini后缀):\n(Enter new config name without .ini suffix):",
+            text=default_text
+        )
+        return new_name, ok
+

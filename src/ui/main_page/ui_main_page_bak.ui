@@ -29,9 +29,9 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QTabWidget" name="main_tabWidget">
+      <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -45,22 +45,38 @@
              <property name="title">
               <string>启动参数(Run Params)</string>
              </property>
-             <layout class="QGridLayout" name="gridLayout_12">
+             <layout class="QGridLayout" name="gridLayout_4">
               <item row="0" column="0">
-               <layout class="QVBoxLayout" name="verticalLayout_8" stretch="1,3,0,3">
+               <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,3,1,3,1,3,1,3,0,0,0">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>*Tips: 刚接触，其余配置后续补充</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_10">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
                   <item>
                    <widget class="QPushButton" name="choose_server_root">
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>40</height>
+                      <height>30</height>
                      </size>
                     </property>
                     <property name="text">
-                     <string>点击选择服务器根目录
-(Choose Server Root)</string>
+                     <string>点击选择服务器根目录(Choose Server Root)</string>
                     </property>
                    </widget>
                   </item>
@@ -99,85 +115,111 @@ QLineEdit:hover {
                  </layout>
                 </item>
                 <item>
-                 <widget class="QGroupBox" name="groupBox_5">
-                  <property name="styleSheet">
-                   <string notr="true">QGroupBox{
-    border: none;               
-    border-top: 1px solid black; 
-}</string>
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string/>
                   </property>
-                  <property name="title">
-                   <string>多通世界(More Worlds)</string>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,1,2,0,0,12">
+                  <item>
+                   <widget class="QCheckBox" name="open_param_be">
+                    <property name="text">
+                     <string>开启BattlEye(Open BE)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_7">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="open_param_mods">
+                    <property name="text">
+                     <string>开启模组(Open Mods)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_8">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="open_param_mworlds">
+                    <property name="text">
+                     <string>多通世界(More World Open)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string/>
                   </property>
-                  <layout class="QGridLayout" name="gridLayout_4">
-                   <property name="bottomMargin">
-                    <number>2</number>
-                   </property>
-                   <item row="0" column="0">
-                    <layout class="QVBoxLayout" name="verticalLayout_2">
-                     <item>
-                      <spacer name="horizontalSpacer_8">
-                       <property name="orientation">
-                        <enum>Qt::Orientation::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1,3,0,2">
-                       <property name="topMargin">
-                        <number>5</number>
-                       </property>
-                       <item>
-                        <widget class="QCheckBox" name="open_param_mworlds">
-                         <property name="text">
-                          <string>开启多通世界(More World Open)</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="horizontalSpacer_3">
-                         <property name="orientation">
-                          <enum>Qt::Orientation::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,2">
-                         <item>
-                          <widget class="QLabel" name="label_7">
-                           <property name="text">
-                            <string>多通存档ID(Cluster ID)：</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="cluster_id">
-                           <property name="minimumSize">
-                            <size>
-                             <width>132</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,2,0,1,2,0,0,0,5">
+                  <item>
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>服务器密码(Server Pwd)：</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="server_pwd">
+                    <property name="minimumSize">
+                     <size>
+                      <width>132</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>132</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
     border: 1px solid #ccc;
     border-radius: 3px;
     padding: 5px;
@@ -194,61 +236,230 @@ QLineEdit:focus {
 QLineEdit:hover {
     border: 1px solid #999;
 }</string>
-                           </property>
-                           <property name="placeholderText">
-                            <string>唯一ID</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="cluster_id_ask">
-                         <property name="maximumSize">
-                          <size>
-                           <width>30</width>
-                           <height>30</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string>?</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="horizontalSpacer">
-                         <property name="orientation">
-                          <enum>Qt::Orientation::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,9,0,2">
-                       <item>
-                        <widget class="QLabel" name="label_8">
-                         <property name="text">
-                          <string>多通数据路径(Cluster Path)：</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="cluster_path">
-                         <property name="maximumSize">
-                          <size>
-                           <width>16777215</width>
-                           <height>16777215</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>管理员密码(Admin Pwd)：</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="admin_pwd">
+                    <property name="minimumSize">
+                     <size>
+                      <width>132</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>132</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+    min-width: 120px;
+    background: white;
+}
+
+QLineEdit:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+}
+
+QLineEdit:hover {
+    border: 1px solid #999;
+}</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_2">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>单地图最大人数(MaxPlayer Count)：</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="max_player">
+                    <property name="styleSheet">
+                     <string notr="true">QSpinBox {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    min-width: 30px;
+    background: white;
+}
+
+QSpinBox:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+}
+
+QSpinBox:hover {
+    border: 1px solid #999;
+}</string>
+                    </property>
+                    <property name="maximum">
+                     <number>10000</number>
+                    </property>
+                    <property name="value">
+                     <number>30</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_9">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                  <item>
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>多通存档ID(Cluster ID)：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="cluster_id">
+                    <property name="minimumSize">
+                     <size>
+                      <width>132</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>132</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+    min-width: 120px;
+    background: white;
+}
+
+QLineEdit:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+}
+
+QLineEdit:hover {
+    border: 1px solid #999;
+}</string>
+                    </property>
+                    <property name="placeholderText">
+                     <string>唯一ID</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="cluster_id_ask">
+                    <property name="maximumSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>?</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>多通数据路径(Cluster Path)：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="cluster_path">
+                    <property name="maximumSize">
+                     <size>
+                      <width>132</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
     border: 1px solid #ccc;
     border-radius: 3px;
     padding: 5px;
@@ -266,355 +477,127 @@ QLineEdit:hover {
     border: 1px solid #999;
 }
 </string>
-                         </property>
-                         <property name="readOnly">
-                          <bool>true</bool>
-                         </property>
-                         <property name="placeholderText">
-                          <string>数据上下载路径</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="cluster_path_ask">
-                         <property name="maximumSize">
-                          <size>
-                           <width>30</width>
-                           <height>30</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string>?</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="choose_cluster_path_btn">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string>选择路径
-(Choose Save Path)</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
+                    </property>
+                    <property name="readOnly">
+                     <bool>true</bool>
+                    </property>
+                    <property name="placeholderText">
+                     <string>数据上下载路径</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="choose_cluster_path_btn">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>选择路径(Choose Save Path)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="cluster_path_ask">
+                    <property name="maximumSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>?</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_9">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QLabel" name="label_16">
+                    <property name="text">
+                     <string>服务器名称(ServerName)：</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="server_session_name">
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+    min-width: 120px;
+    background: white;
+}
+
+QLineEdit:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+}
+
+QLineEdit:hover {
+    border: 1px solid #999;
+}</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_15">
+                  <property name="text">
+                   <string/>
+                  </property>
                  </widget>
                 </item>
                 <item>
-                 <spacer name="horizontalSpacer_9">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
+                 <widget class="QPushButton" name="save_set_input">
+                  <property name="minimumSize">
                    <size>
-                    <width>40</width>
-                    <height>20</height>
+                    <width>132</width>
+                    <height>40</height>
                    </size>
                   </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBox_6">
                   <property name="styleSheet">
-                   <string notr="true">QGroupBox{
-    border: none;               
-    border-top: 1px solid black; 
-}</string>
-                  </property>
-                  <property name="title">
-                   <string>通用配置(Common settings)</string>
-                  </property>
-                  <layout class="QGridLayout" name="gridLayout_11">
-                   <item row="2" column="0">
-                    <layout class="QHBoxLayout" name="horizontalLayout_23"/>
-                   </item>
-                   <item row="1" column="0">
-                    <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="1,0,1,0,1">
-                     <item>
-                      <layout class="QVBoxLayout" name="verticalLayout_7">
-                       <property name="spacing">
-                        <number>3</number>
-                       </property>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="1,2">
-                         <item>
-                          <widget class="QLabel" name="label_2">
-                           <property name="text">
-                            <string>服务器密码：
-(Server Pwd)：</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="server_pwd">
-                           <property name="minimumSize">
-                            <size>
-                             <width>190</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>190</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
+                   <string notr="true">QPushButton {
     border: 1px solid #ccc;
     border-radius: 3px;
     padding: 5px;
     font-size: 14px;
-    min-width: 120px;
-    background: white;
-}
-
-QLineEdit:focus {
-    border: 1px solid #4a90e2;
-    outline: none;
-}
-
-QLineEdit:hover {
-    border: 1px solid #999;
-}</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="1,2">
-                         <item>
-                          <widget class="QLabel" name="label_16">
-                           <property name="text">
-                            <string>服务器名称：
-(ServerName)：</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="server_session_name">
-                           <property name="minimumSize">
-                            <size>
-                             <width>190</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>190</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    padding: 5px;
-    font-size: 14px;
-    min-width: 120px;
-    background: white;
-}
-
-QLineEdit:focus {
-    border: 1px solid #4a90e2;
-    outline: none;
-}
-
-QLineEdit:hover {
-    border: 1px solid #999;
-}</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer">
-                       <property name="orientation">
-                        <enum>Qt::Orientation::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <layout class="QVBoxLayout" name="verticalLayout_9">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,2">
-                         <item>
-                          <widget class="QLabel" name="label_3">
-                           <property name="text">
-                            <string>管理员密码：
-(Admin Pwd)：</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="admin_pwd">
-                           <property name="minimumSize">
-                            <size>
-                             <width>190</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>190</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    padding: 5px;
-    font-size: 14px;
-    min-width: 120px;
-    background: white;
-}
-
-QLineEdit:focus {
-    border: 1px solid #4a90e2;
-    outline: none;
-}
-
-QLineEdit:hover {
-    border: 1px solid #999;
-}</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="1,1">
-                         <item>
-                          <widget class="QCheckBox" name="open_param_be">
-                           <property name="text">
-                            <string>开启BattlEye(Open BE)</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QCheckBox" name="open_param_mods">
-                           <property name="text">
-                            <string>开启模组(Open Mods)</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_2">
-                       <property name="orientation">
-                        <enum>Qt::Orientation::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>48</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <layout class="QVBoxLayout" name="verticalLayout_10">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="1,2">
-                         <item>
-                          <widget class="QLabel" name="label_4">
-                           <property name="text">
-                            <string>单地图最大人数：
-(MaxPlayer Count)：</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QSpinBox" name="max_player">
-                           <property name="minimumSize">
-                            <size>
-                             <width>32</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>150</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QSpinBox {
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 14px;
-    min-width: 30px;
-    background: white;
-}
-
-QSpinBox:focus {
-    border: 1px solid #4a90e2;
-    outline: none;
-}
-
-QSpinBox:hover {
-    border: 1px solid #999;
-}</string>
-                           </property>
-                           <property name="maximum">
-                            <number>10000</number>
-                           </property>
-                           <property name="value">
-                            <number>30</number>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="save_set_input">
-                         <property name="minimumSize">
-                          <size>
-                           <width>132</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    padding: 5px;
-    font-size: 12px;
     min-width: 120px;
     background: white;
 }
@@ -627,31 +610,10 @@ QPushButton:focus {
 QPushButton:hover {
     border: 1px solid #999;
 }</string>
-                         </property>
-                         <property name="text">
-                          <string>保存所有配置
-(Save All Config)</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </item>
-                   <item row="0" column="0">
-                    <spacer name="horizontalSpacer_7">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
+                  </property>
+                  <property name="text">
+                   <string>保存(Save Input)</string>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -946,7 +908,7 @@ QPushButton:hover {
        </widget>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
-         <string>模组配置(ModsSettings)</string>
+         <string>模组配置(Mods Settings)</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_8">
          <item row="0" column="0">
@@ -1159,33 +1121,6 @@ QLineEdit:hover {
                </layout>
               </item>
              </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_4">
-        <attribute name="title">
-         <string>监控面板(MonitoringPanel)</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_14">
-         <item row="0" column="0">
-          <widget class="QGroupBox" name="groupBox_7">
-           <property name="title">
-            <string>工具日志(Tool Log)</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_13">
-            <item row="0" column="0">
-             <widget class="QTextEdit" name="mp_show_logs">
-              <property name="styleSheet">
-               <string notr="true">font-size: 12px;
-font-weight: bold;</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
             </item>
            </layout>
           </widget>
