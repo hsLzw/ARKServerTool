@@ -1,141 +1,203 @@
 import configparser
 import os
 import time
+import subprocess
+import psutil
+from typing import Dict, Any
 
 from app.models.ini_settings import ins_server_setting, ins_game_setting
 from app.models.json_setting import ins_mods_setting, ins_world_info
 from app.models.log_data import ins_tool_logger
 
-class OpenServer:
 
-    @staticmethod
-    def start():
-        # 获取服务器启动文件
-        server_root = ins_server_setting.root_path
-        server_exe = os.path.join(server_root, "ShooterGame", "Binaries", "Win64", "ArkAscendedServer.exe")
-        # if not os.path.exists(server_exe):
-        #     ins_tool_logger.add_log(f"********{server_exe}启动文件不存在!终止执行！(Error: {server_exe} startup file does not exist! Execution terminated!)")
-        #     return
-        # 获取拼接命令
-        all_world = ins_world_info.get_all()
-        ind = 0
-        for this_world_id in all_world:
-            if not all_world[this_world_id]["open"]:
+class OpenServer:
+    _processes = {}  # 保存所有服务器进程
+
+    @classmethod
+    def start(cls):
+        """启动所有配置开启的世界服务器（非阻塞方式）"""
+        server_exe = cls._get_server_executable()
+        if not os.path.exists(server_exe):
+            cls._log(f"{server_exe} 不存在(does not exist)", error=True)
+            return
+        all_worlds = ins_world_info.get_all()
+
+        for idx, (world_id, world_data) in enumerate(all_worlds.items()):
+            if not world_data["open"]:
                 continue
-            if ind != 0:
-                ins_tool_logger.add_log(f"防止配置覆盖，等待60s后继续开启下一个世界！(To prevent configuration overwriting, waiting 60s before opening next world!)")
+
+            if idx > 0:
+                cls._log_wait_between_servers()
                 time.sleep(60)
 
-            ins_tool_logger.add_log(f'''准备开启服务器(Open Server)
-            {this_world_id}-{all_world[this_world_id]['name']}
-            Port:{all_world[this_world_id]['port']}
-            RCONPort:{all_world[this_world_id]['rcon_port']}
-            WorldConfig:{all_world[this_world_id]['world_set']}
-            ''')
+            cls._log_server_startup(world_id, world_data)
+            command = cls._build_server_command(world_id, world_data, server_exe)
+            cls._launch_server(world_id, command)
 
-            # 获取其他参数
-            run_command = OpenServer.get_command(this_world_id, all_world[this_world_id])
-            # 拼接
-            result_command = f'"{server_exe}" {run_command}'
-            # 输出
-            ins_tool_logger.add_log(f"(Executing startup command)执行启动命令:{result_command}")
-            #
-            ind += 1
+        cls._log_startup_completion()
 
-        ins_tool_logger.add_log(f"服务器启动完成！等待全部弹出的黑色窗口左下角变成绿色标记并且提示Server Ready即可！(Server startup completed! Wait until all black windows show green indicator and 'Server Ready' message!)")
-
-    @staticmethod
-    def get_command(world_id, world_data):
-        # 读取世界的数据
-        port = world_data["port"]
-        rcon_port = world_data["rcon_port"]
-        world_set = world_data["world_set"]
-        # 获取世界配置参数
-        param_world_config = OpenServer.get_world_config(world_set)
-        # 获取服务器配置，密码、等需要拼接的参数
-        param_server_config = OpenServer.get_server_config_pj(port, rcon_port)
-        # 获取额外参数
-        param_server_config_ex = OpenServer.get_server_config_ex()
-        # 获取模组配置
-        param_mods = ""
-        if ins_server_setting.mods_open:
-            param_mods = OpenServer.get_mods_open()
-        # 拼接
-        result = f"{world_id}?listen?{param_world_config}?{param_server_config} {param_server_config_ex} {param_mods}"
-        return result
-
-    @staticmethod
-    def get_mods_open():
-        param_str = ""
-        all_mods = ins_mods_setting.get_all()
-        for mods_id in all_mods:
-            if not all_mods[mods_id]["open"]:
-                continue
-            param_str += mods_id + ","
-        if param_str:
-            param_str = "-mods=" + param_str[:-1]
-        return param_str
-
-    @staticmethod
-    def get_server_config_ex():
-        cluster_id = ins_server_setting.cluster_id
-        cluster_path = ins_server_setting.cluster_path
-        be_open = ins_server_setting.be_open
-        more_worlds_open = ins_server_setting.more_worlds_open
-        #
-        battleye_param = ""
-        if not be_open:
-            battleye_param = "-NoBattlEye"
-        # 拼接
-        if more_worlds_open:
-            if battleye_param:
-                param_str = f'-ClusterID={cluster_id} {battleye_param} -ClusterDirOverride="{cluster_path}"'
-            else:
-                param_str = f'-ClusterID={cluster_id} -ClusterDirOverride="{cluster_path}"'
+    @classmethod
+    def stop(cls, world_id: str = None):
+        """停止服务器进程"""
+        if world_id:
+            if world_id in cls._processes:
+                cls._terminate_process(cls._processes[world_id])
+                del cls._processes[world_id]
         else:
-            param_str = f"{battleye_param}"
-        return param_str
+            for proc in cls._processes.values():
+                cls._terminate_process(proc)
+            cls._processes.clear()
 
-    @staticmethod
-    def get_server_config_pj(port, rcon_port):
-        server_session_name = ins_server_setting.server_session_name
-        server_pwd = ins_server_setting.server_pwd
-        admin_pwd = ins_server_setting.admin_pwd
-        max_player = ins_server_setting.max_player
-        # # bAllowCrossARKTravel=True?bAllowCrossARKDataTransfers=True?bAllowCrossARKTribeData=True
-        param_str = f"Port={port}?RCONPort={rcon_port}?MaxPlayers={max_player}?SessionName={server_session_name}?ServerPassword={server_pwd}?ServerAdminPassword={admin_pwd}"
-        return param_str
+    @classmethod
+    def _get_server_executable(cls) -> str:
+        """获取服务器可执行文件路径"""
+        return os.path.join(
+            ins_server_setting.root_path,
+            "ShooterGame", "Binaries", "Win64", "ArkAscendedServer.exe"
+        )
 
-    @staticmethod
-    def get_world_config(world_set):
-        '''
-        获取服务器配置信息
-        Get server configuration information
-        :return:
-        '''
-        # 提取配置文件
+    @classmethod
+    def _build_server_command(cls, world_id: str, world_data: Dict[str, Any], server_exe: str) -> str:
+        """构建完整的服务器启动命令"""
+        world_params = cls._get_world_config(world_data["world_set"])
+        server_params = cls._get_server_params(
+            world_data["port"],
+            world_data["rcon_port"]
+        )
+        extra_params = cls._get_extra_params()
+        mods_params = cls._get_mods_params()
+
+        return (
+            f'"{server_exe}" '
+            f'{world_id}?listen?{world_params}?{server_params} '
+            f'{extra_params} {mods_params}'
+        )
+
+    @classmethod
+    def _launch_server(cls, world_id: str, command: str):
+        """启动服务器进程（非阻塞）"""
+        try:
+            # 创建独立的进程组，确保进程独立运行
+            creationflags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+
+            # 启动进程
+            proc = subprocess.Popen(
+                command,
+                shell=True,
+                creationflags=creationflags,
+                close_fds=True
+            )
+
+            # 设置进程优先级为高
+            try:
+                p = psutil.Process(proc.pid)
+                p.nice(psutil.HIGH_PRIORITY_CLASS)
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+
+            cls._processes[world_id] = proc
+            cls._log(" ".join(command))
+            cls._log(f"服务器 {world_id} 已启动 (PID: {proc.pid}) (Server {world_id} started with PID: {proc.pid})")
+
+        except Exception as e:
+            cls._log(f"启动服务器 {world_id} 失败: {str(e)} (Failed to start server {world_id}: {str(e)})", error=True)
+            raise
+
+    @classmethod
+    def _terminate_process(cls, process):
+        """终止服务器进程"""
+        try:
+            process.terminate()
+            process.wait(timeout=10)
+        except:
+            try:
+                process.kill()
+            except:
+                pass
+
+    @classmethod
+    def _get_world_config(cls, world_set: str) -> str:
+        """获取世界配置参数"""
         file_path = f"config/game_settings/{world_set}.ini"
         if not os.path.exists(file_path):
-            ins_tool_logger.add_log(f"**************配置文件未找到！{world_set}.ini(Configuration file not found!)")
-            raise Exception("error")
-        # 读取config
+            cls._log(f"配置文件未找到！{world_set}.ini (Configuration file not found: {world_set}.ini)", error=True)
+            raise FileNotFoundError(f"Config file not found: {world_set}.ini")
+
         config = configparser.ConfigParser()
         with open(file_path, 'r', encoding='utf-8') as f:
             config.read_file(f)
-        # 检查ServerSettings段是否存在
+
         if 'ServerSettings' not in config:
-            ins_tool_logger.add_log(f"{world_set}.ini是空的，不修改任何服务器参数！({world_set}.ini is empty, no server parameters modified!)")
+            cls._log(f"{world_set}.ini 没有 ServerSettings 段 ({world_set}.ini has no ServerSettings section)",
+                     warning=True)
             return ""
-        # 提取 看是否有值
+
         server_settings = config['ServerSettings']
-        if not server_settings:
-            ins_tool_logger.add_log(f"{world_set}.ini的ServerSettings是空的，不修改任何服务器参数！(ServerSettings in {world_set}.ini is empty, no server parameters modified!)")
+        return "?".join(f"{k}={v}" for k, v in server_settings.items())
+
+    @classmethod
+    def _get_server_params(cls, port: int, rcon_port: int) -> str:
+        """获取服务器基本参数"""
+        return (
+            f"Port={port}?"
+            f"RCONPort={rcon_port}?"
+            f"MaxPlayers={ins_server_setting.max_player}?"
+            f"SessionName={ins_server_setting.server_session_name}?"
+            f"ServerPassword={ins_server_setting.server_pwd}?"
+            f"ServerAdminPassword={ins_server_setting.admin_pwd}"
+        )
+
+    @classmethod
+    def _get_extra_params(cls) -> str:
+        """获取额外参数"""
+        params = []
+        if not ins_server_setting.be_open:
+            params.append("-NoBattlEye")
+        if ins_server_setting.more_worlds_open:
+            params.append(f"-ClusterID={ins_server_setting.cluster_id}")
+            params.append(f'-ClusterDirOverride="{ins_server_setting.cluster_path}"')
+        return " ".join(params)
+
+    @classmethod
+    def _get_mods_params(cls) -> str:
+        """获取Mod参数"""
+        if not ins_server_setting.mods_open:
             return ""
-        # 参数串
-        param_str = ""
-        # 遍历所有值
-        for key, value in server_settings.items():
-            param_str += f"{key}={value}?"
-        # 去掉最后一个问号
-        param_str = param_str[:-1]
-        return param_str
+
+        mod_ids = [
+            mod_id for mod_id, mod_data in ins_mods_setting.get_all().items()
+            if mod_data["open"]
+        ]
+        return f"-mods={','.join(mod_ids)}" if mod_ids else ""
+
+    @classmethod
+    def _log_wait_between_servers(cls):
+        """记录等待日志"""
+        cls._log(
+            "防止配置覆盖，等待60s后继续开启下一个世界！(To prevent configuration conflicts, waiting 60s before starting next world!)")
+
+    @classmethod
+    def _log_server_startup(cls, world_id: str, world_data: Dict[str, Any]):
+        """记录服务器启动日志"""
+        cls._log(
+            f"准备开启服务器: {world_id}-{world_data['name']}\n"
+            f"Port: {world_data['port']}\n"
+            f"RCONPort: {world_data['rcon_port']}\n"
+            f"WorldConfig: {world_data['world_set']}\n"
+            f"(Preparing to start server: {world_id}-{world_data['name']}\n"
+            f"Port: {world_data['port']}\n"
+            f"RCONPort: {world_data['rcon_port']}\n"
+            f"WorldConfig: {world_data['world_set']})"
+        )
+
+    @classmethod
+    def _log_startup_completion(cls):
+        """记录启动完成日志"""
+        cls._log(
+            "服务器启动完成！等待全部弹出的黑色窗口左下角变成绿色标记并且提示Server Ready即可！(Server startup completed! Wait for all console windows to show green 'Server Ready' indicator!)")
+
+    @classmethod
+    def _log(cls, message: str, warning: bool = False, error: bool = False):
+        """统一的日志记录方法"""
+        log_type = "WARNING" if warning else ("ERROR" if error else "INFO")
+        ins_tool_logger.add_log(f"{message}", log_type)
