@@ -361,7 +361,7 @@ QLineEdit:hover {
                           <widget class="QLineEdit" name="server_pwd">
                            <property name="minimumSize">
                             <size>
-                             <width>190</width>
+                             <width>132</width>
                              <height>30</height>
                             </size>
                            </property>
@@ -411,7 +411,7 @@ QLineEdit:hover {
                           <widget class="QLineEdit" name="server_session_name">
                            <property name="minimumSize">
                             <size>
-                             <width>190</width>
+                             <width>132</width>
                              <height>30</height>
                             </size>
                            </property>
@@ -478,7 +478,7 @@ QLineEdit:hover {
                           <widget class="QLineEdit" name="admin_pwd">
                            <property name="minimumSize">
                             <size>
-                             <width>190</width>
+                             <width>132</width>
                              <height>30</height>
                             </size>
                            </property>
@@ -784,14 +784,14 @@ QPushButton:hover {
          <item row="1" column="0">
           <widget class="QLabel" name="label_17">
            <property name="text">
-            <string>当世界配置不完全一样时，防止配置覆盖，启动世界的间隔是1分钟。免费软件。Git地址:https://github.com/hsLzw/ARKServerTool/blob/main/README.md</string>
+            <string>当世界配置不完全一样时，防止配置覆盖，保证一个世界就绪后才会启动下一个世界。免费软件。Git地址:https://github.com/hsLzw/ARKServerTool</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_18">
            <property name="text">
-            <string>When the world configurations are not exactly the same, to prevent configuration overwriting, the interval for starting the world is 1 minute.</string>
+            <string>When world configurations are not identical, prevent configuration overwriting and ensure the next world is only started after the current one is ready.</string>
            </property>
           </widget>
          </item>
@@ -979,7 +979,22 @@ QPushButton:hover {
                  </size>
                 </property>
                 <property name="text">
-                 <string>保存模组选中(Save Config)</string>
+                 <string>保存模组选中
+(Save Config)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="mods_install_crt">
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>一键安装Mods证书
+(install AmazonRootCA2.crt)</string>
                 </property>
                </widget>
               </item>

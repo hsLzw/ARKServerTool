@@ -249,7 +249,7 @@ class Ui_MainPage(object):
 
         self.server_pwd = QLineEdit(self.groupBox_6)
         self.server_pwd.setObjectName(u"server_pwd")
-        self.server_pwd.setMinimumSize(QSize(190, 30))
+        self.server_pwd.setMinimumSize(QSize(132, 30))
         self.server_pwd.setMaximumSize(QSize(190, 16777215))
         self.server_pwd.setStyleSheet(u"QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
@@ -286,7 +286,7 @@ class Ui_MainPage(object):
 
         self.server_session_name = QLineEdit(self.groupBox_6)
         self.server_session_name.setObjectName(u"server_session_name")
-        self.server_session_name.setMinimumSize(QSize(190, 30))
+        self.server_session_name.setMinimumSize(QSize(132, 30))
         self.server_session_name.setMaximumSize(QSize(190, 16777215))
         self.server_session_name.setStyleSheet(u"QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
@@ -332,7 +332,7 @@ class Ui_MainPage(object):
 
         self.admin_pwd = QLineEdit(self.groupBox_6)
         self.admin_pwd.setObjectName(u"admin_pwd")
-        self.admin_pwd.setMinimumSize(QSize(190, 30))
+        self.admin_pwd.setMinimumSize(QSize(132, 30))
         self.admin_pwd.setMaximumSize(QSize(190, 16777215))
         self.admin_pwd.setStyleSheet(u"QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
@@ -706,6 +706,12 @@ class Ui_MainPage(object):
 
         self.horizontalLayout_17.addWidget(self.save_mods_button)
 
+        self.mods_install_crt = QPushButton(self.groupBox_4)
+        self.mods_install_crt.setObjectName(u"mods_install_crt")
+        self.mods_install_crt.setMinimumSize(QSize(200, 50))
+
+        self.horizontalLayout_17.addWidget(self.mods_install_crt)
+
         self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_17.addItem(self.horizontalSpacer_15)
@@ -905,8 +911,8 @@ class Ui_MainPage(object):
         self.more_world_save.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58\u4fee\u6539(Save Change)", None))
         self.more_world_add.setText(QCoreApplication.translate("MainPage", u"\u6dfb\u52a0\u65b0\u4e16\u754c\u914d\u7f6e(Add New World)", None))
         self.run_button.setText(QCoreApplication.translate("MainPage", u"\u542f\u52a8(RUN)", None))
-        self.label_17.setText(QCoreApplication.translate("MainPage", u"\u5f53\u4e16\u754c\u914d\u7f6e\u4e0d\u5b8c\u5168\u4e00\u6837\u65f6\uff0c\u9632\u6b62\u914d\u7f6e\u8986\u76d6\uff0c\u542f\u52a8\u4e16\u754c\u7684\u95f4\u9694\u662f1\u5206\u949f\u3002\u514d\u8d39\u8f6f\u4ef6\u3002Git\u5730\u5740:https://github.com/hsLzw/ARKServerTool/blob/main/README.md", None))
-        self.label_18.setText(QCoreApplication.translate("MainPage", u"When the world configurations are not exactly the same, to prevent configuration overwriting, the interval for starting the world is 1 minute.", None))
+        self.label_17.setText(QCoreApplication.translate("MainPage", u"\u5f53\u4e16\u754c\u914d\u7f6e\u4e0d\u5b8c\u5168\u4e00\u6837\u65f6\uff0c\u9632\u6b62\u914d\u7f6e\u8986\u76d6\uff0c\u4fdd\u8bc1\u4e00\u4e2a\u4e16\u754c\u5c31\u7eea\u540e\u624d\u4f1a\u542f\u52a8\u4e0b\u4e00\u4e2a\u4e16\u754c\u3002\u514d\u8d39\u8f6f\u4ef6\u3002Git\u5730\u5740:https://github.com/hsLzw/ARKServerTool", None))
+        self.label_18.setText(QCoreApplication.translate("MainPage", u"When world configurations are not identical, prevent configuration overwriting and ensure the next world is only started after the current one is ready.", None))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.tab), QCoreApplication.translate("MainPage", u"\u542f\u52a8\u9875\u9762(Run)", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainPage", u"\u591a\u914d\u7f6e\u8bbe\u5b9a(\u8bbe\u5b9a\u90e8\u5206\u9879\uff0c\u672a\u5728\u6b64\u914d\u7f6e\u7684\u9879\u5c06\u4f7f\u7528\u6e38\u620f\u7684\u9ed8\u8ba4\u8bbe\u5b9a)", None))
         self.label_11.setText(QCoreApplication.translate("MainPage", u"\u9009\u62e9\u914d\u7f6e(Choose config):", None))
@@ -919,7 +925,10 @@ class Ui_MainPage(object):
         self.label_20.setText(QCoreApplication.translate("MainPage", u"Only the configurations in the ServerSettings section will be adjusted. Configurations not specified in the file will use the game's default settings.", None))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainPage", u"\u4e16\u754c\u914d\u7f6e\u6587\u4ef6(WorldConfig)", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("MainPage", u"\u6a21\u7ec4\u9009\u62e9(\u81ea\u884c\u524d\u5f80\u641c\u7d22\u6a21\u7ec4: https://www.curseforge.com/ark-survival-ascended/search?page=1&pageSize=20)", None))
-        self.save_mods_button.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58\u6a21\u7ec4\u9009\u4e2d(Save Config)", None))
+        self.save_mods_button.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58\u6a21\u7ec4\u9009\u4e2d\n"
+"(Save Config)", None))
+        self.mods_install_crt.setText(QCoreApplication.translate("MainPage", u"\u4e00\u952e\u5b89\u88c5Mods\u8bc1\u4e66\n"
+"(install AmazonRootCA2.crt)", None))
         self.label_12.setText(QCoreApplication.translate("MainPage", u"\u6a21\u7ec4ID(Mods ID)\uff1a", None))
         self.label_13.setText(QCoreApplication.translate("MainPage", u"\u6a21\u7ec4\u540d\u79f0(Name)\uff1a", None))
         self.label_14.setText(QCoreApplication.translate("MainPage", u"\u5907\u6ce8(Desc)\uff1a", None))

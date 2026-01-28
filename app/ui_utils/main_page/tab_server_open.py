@@ -18,6 +18,7 @@ class ServerWorker(QObject):
     """
 
     reset_button = Signal(bool)
+    self_finished = Signal()
 
     def run(self):
         ins_tool_logger.add_log("Start...")
@@ -27,7 +28,11 @@ class ServerWorker(QObject):
             ins_tool_logger.add_log(traceback.format_exc())
         finally:
             self.reset_button.emit(True)
+        # 提示界面可以在此点击开始了
+        self.self_finished.emit()
         ins_tool_logger.add_log("End...")
+        # 退出
+        self.thread().quit()
 
 class MainPage_ServerOpen(ServerOpen_Widget):
 
@@ -37,6 +42,7 @@ class MainPage_ServerOpen(ServerOpen_Widget):
         self.choose_cluster_path = ""
         self.worker_thread = None
         self.worker = None
+        self.worker_finished = True
 
     def ins_init(self):
         MainPage_ServerOpen.widget_init(self)
@@ -329,7 +335,7 @@ class MainPage_ServerOpen(ServerOpen_Widget):
                 self.__set_run_button(True)
                 return
 
-        if self.worker_thread and not self.worker_thread.isFinished():
+        if not self.worker_finished:
             self.message_box("服务器正在启动中，请稍候(Server is opening, please wait...)")
             return
         # 服务器开启
@@ -338,8 +344,11 @@ class MainPage_ServerOpen(ServerOpen_Widget):
         self.worker = ServerWorker()
         self.worker_thread.started.connect(self.worker.run)
         self.worker.reset_button.connect(self.__set_run_button)
+        self.worker.self_finished.connect(self.__set_finished_status)
+
         self.worker.moveToThread(self.worker_thread)
         self.worker_thread.start()
+        self.worker_finished = False
         self.main_tabWidget.setCurrentIndex(3)
 
     def __set_run_button(self, is_ok):
@@ -349,3 +358,8 @@ class MainPage_ServerOpen(ServerOpen_Widget):
         else:
             self.run_button.setEnabled(False)
             self.run_button.setText("启动中(Running)")
+
+    def __set_finished_status(self):
+        self.worker_finished = True
+
+

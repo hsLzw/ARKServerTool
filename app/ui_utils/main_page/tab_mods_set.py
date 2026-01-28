@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 from PySide6.QtWidgets import (
     QMessageBox,
     QTableWidgetItem,
@@ -45,6 +48,55 @@ class MainPage_ModsSet(BasePage, Ui_MainPage):
         self.add_mods_button.clicked.connect(self.__on_add_mods)
         self.save_mods_button.clicked.connect(self.__on_save_mods)
         self.mods_show_table.cellDoubleClicked.connect(self.__on_edit_cell)
+        self.mods_install_crt.clicked.connect(self.__install_certificate_windows)
+
+    def __install_certificate_windows(self):
+        """
+        Windows-specific certificate installation function
+        Windows专用证书安装功能
+        """
+        cert_path = os.path.join("config", "AmazonRootCA2.crt")
+
+        # Check if certificate file exists 检查证书文件是否存在
+        if not os.path.exists(cert_path):
+            self.message_box(
+                "证书文件不存在！\n请确保 AmazonRootCA2.crt 在 config 目录下。\n(Certificate file not found! Please ensure AmazonRootCA2.crt is in the config directory.)")
+            return
+
+        try:
+            # Install certificate to Trusted Root Certification Authorities store
+            # 将证书安装到受信任根证书颁发机构存储
+            command = f'certutil -addstore "Root" "{os.path.abspath(cert_path)}"'
+
+            # Run with admin privileges 以管理员权限运行
+            if self.__is_admin():
+                result = subprocess.run(command, shell=True, check=True,
+                                        capture_output=True, text=True, encoding='gbk')
+            else:
+                # Try to run with elevated privileges 尝试以提升权限运行
+                command = f'powershell -Command "Start-Process cmd -Verb RunAs -ArgumentList \'/c {command}\'"'
+                result = subprocess.run(command, shell=True, check=True,
+                                        capture_output=True, text=True, encoding='gbk')
+
+            if result.returncode == 0:
+                self.message_box("证书安装成功！\n(Certificate installed successfully!)")
+            else:
+                error_msg = result.stderr if result.stderr else "未知错误 (Unknown error)"
+                self.message_box(f"证书安装失败:\n{error_msg}\n(Certificate installation failed)")
+
+        except subprocess.CalledProcessError as e:
+            error_msg = e.stderr if e.stderr else str(e)
+            self.message_box(f"证书安装失败:\n{error_msg}\n(Certificate installation failed)")
+        except Exception as e:
+            self.message_box(f"发生意外错误:\n{str(e)}\n(Unexpected error occurred)")
+
+    def __is_admin(self):
+        """Check if running with admin privileges 检查是否以管理员权限运行"""
+        try:
+            return subprocess.run('net session', shell=True,
+                                  stderr=subprocess.PIPE, stdout=subprocess.PIPE).returncode == 0
+        except:
+            return False
 
     def __load_data(self):
         """从配置加载数据到表格"""
