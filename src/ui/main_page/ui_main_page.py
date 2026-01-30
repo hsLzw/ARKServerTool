@@ -625,6 +625,11 @@ class Ui_MainPage(object):
 
         self.horizontalLayout_12.addWidget(self.wc_copy_config)
 
+        self.simple_config_btn = QPushButton(self.groupBox_3)
+        self.simple_config_btn.setObjectName(u"simple_config_btn")
+
+        self.horizontalLayout_12.addWidget(self.simple_config_btn)
+
         self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_12.addItem(self.horizontalSpacer_12)
@@ -872,7 +877,7 @@ class Ui_MainPage(object):
 
         self.retranslateUi(MainPage)
 
-        self.main_tabWidget.setCurrentIndex(0)
+        self.main_tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainPage)
@@ -919,6 +924,7 @@ class Ui_MainPage(object):
         self.wc_add_new_file.setText(QCoreApplication.translate("MainPage", u"\u65b0\u589e\u914d\u7f6e\u6587\u4ef6(Add Config)", None))
         self.wc_save_change.setText(QCoreApplication.translate("MainPage", u"\u4fdd\u5b58(Save Config/Change)", None))
         self.wc_copy_config.setText(QCoreApplication.translate("MainPage", u"\u590d\u5236\u5f53\u524d\u914d\u7f6e(Copy Current Config)", None))
+        self.simple_config_btn.setText(QCoreApplication.translate("MainPage", u"\u7b80\u6613\u914d\u7f6e\u754c\u9762(Simple configuration interface)", None))
         self.wc_add_row.setText(QCoreApplication.translate("MainPage", u"\u65b0\u589e\u4e00\u884c(Add a row)", None))
         self.wc_delete_row.setText(QCoreApplication.translate("MainPage", u"\u5220\u9664\u884c(Delete row)", None))
         self.label_19.setText(QCoreApplication.translate("MainPage", u"\u6b64\u5904\u5e76\u975e\u5168\u90e8\u914d\u7f6e\uff0c\u800c\u662f\u90e8\u5206\u9700\u8981\u8c03\u6574\u7684\u914d\u7f6e\u3002\u914d\u7f6e\u6587\u4ef6\u4e2d\u672a\u4f53\u73b0\u7684\u914d\u7f6e\u5c06\u4f1a\u4f7f\u7528\u6e38\u620f\u7684\u9ed8\u8ba4\u914d\u7f6e\u3002\u4ec5\u8c03\u6574ServerSettings\u7684\u914d\u7f6e", None))

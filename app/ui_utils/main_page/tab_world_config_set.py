@@ -49,9 +49,13 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
         self.wc_add_row.clicked.connect(self.__on_add_row)
         self.wc_delete_row.clicked.connect(self.__on_delete_row)
         self.wc_copy_config.clicked.connect(self.__on_copy_config)
+        self.simple_config_btn.clicked.connect(self.__open_simple_config_page)
 
     def __update_to_other_tab(self):
         self.update_world_config_signal.emit()
+
+    def __open_simple_config_page(self):
+        self.message_box("正在开发中(Under development)...")
 
     def __on_copy_config(self):
         """复制当前配置(Copy current config)"""

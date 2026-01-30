@@ -31,7 +31,7 @@
      <item row="0" column="0">
       <widget class="QTabWidget" name="main_tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -865,6 +865,13 @@ QPushButton:hover {
                     </property>
                     <property name="text">
                      <string>复制当前配置(Copy Current Config)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="simple_config_btn">
+                    <property name="text">
+                     <string>简易配置界面(Simple configuration interface)</string>
                     </property>
                    </widget>
                   </item>
