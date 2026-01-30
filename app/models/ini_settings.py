@@ -209,7 +209,7 @@ class ServerSetting(BaseSetting):
         return self.get(self.__server_info_key, "server_session_name", "")
 
 
-class GameSetting(BaseSetting):
+class GameServerSetting(BaseSetting):
     _instance = None
     _initialized = False
     _current_config_path = "config/game_settings/default.ini"  # 默认路径
@@ -239,6 +239,41 @@ class GameSetting(BaseSetting):
             cls._instance.config_path = new_path
             cls._instance._load_config()
 
+class GameInISetting(BaseSetting):
+    _instance = None
+    _initialized = False
+    _current_config_path = "config/game_settings/game_ini/default.ini"  # 默认路径
+
+    def __new__(cls, config_path: str = None):
+        if cls._instance is None:
+            if config_path:
+                cls._current_config_path = config_path
+            cls._instance = super().__new__(cls, cls._current_config_path)
+        return cls._instance
+
+    def __init__(self, config_path: str = None):
+        if config_path:
+            self.change_config_path(config_path)
+        super().__init__(self._current_config_path)
+
+    @classmethod
+    def change_config_path(cls, new_path: str) -> None:
+        """动态更改配置文件路径"""
+        if not new_path.endswith('.ini'):
+            new_path = f"config/game_settings/game_ini/{new_path}.ini"
+        cls._current_config_path = new_path
+
+        if cls._instance:
+            # 关键修改：重新创建 ConfigParser 实例并加载新文件
+            cls._instance.config = configparser.ConfigParser()
+            cls._instance.config_path = new_path
+            cls._instance._load_config()
+
+
+
 # 创建单例实例
 ins_server_setting = ServerSetting()
-ins_game_setting = GameSetting()
+ins_game_setting = GameServerSetting()
+ins_game_ini_setting = GameInISetting()
+
+

@@ -5,14 +5,14 @@ import traceback
 from PySide6.QtCore import Signal
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem, QInputDialog, QHeaderView
-from app.models.ini_settings import ins_game_setting
+from app.models.ini_settings import ins_game_setting, ins_game_ini_setting
 from app.ui_utils.base_page.base_page import BasePage
 from src.ui.main_page.ui_main_page import Ui_MainPage
 
 
 class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
-
     update_world_config_signal = Signal()  # 新增信号
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.current_config = "default"  # 当前选中的配置文件(不带.ini)
@@ -26,8 +26,9 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
     def __setup_ui(self):
         """初始化UI设置(Initialize UI settings)"""
         # 设置表格属性(Set table properties)
-        self.wc_show_world_setting.setColumnCount(4)
-        self.wc_show_world_setting.setHorizontalHeaderLabels(["归属项(Section)", "配置项(Key)", "说明(Description)", "值(Value)"])
+        self.wc_show_world_setting.setColumnCount(5)
+        self.wc_show_world_setting.setHorizontalHeaderLabels(
+            ["配置文件(Config File)", "归属项(Section)", "配置项(Key)", "说明(Description)", "值(Value)"])
         self.wc_show_world_setting.horizontalHeader().setStretchLastSection(True)
 
         # 设置所有列内容靠左对齐(Set all columns left-aligned)
@@ -80,8 +81,9 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
             return
 
         # 4. 检查是否已存在
-        new_file_path = f"config/game_settings/{new_name}.ini"
-        if os.path.exists(new_file_path):
+        new_file_path1 = f"config/game_settings/{new_name}.ini"
+        new_file_path2 = f"config/game_settings/game_ini/{new_name}.ini"
+        if os.path.exists(new_file_path1) or os.path.exists(new_file_path2):
             self.message_box(
                 f"配置 {new_name} 已存在!\n(Config {new_name} already exists!)"
             )
@@ -89,15 +91,22 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
 
         # 5. 复制文件
         try:
-            current_file_path = f"config/game_settings/{current_config}.ini"
+            current_file_path1 = f"config/game_settings/{current_config}.ini"
+            current_file_path2 = f"config/game_settings/game_ini/{current_config}.ini"
 
-            # 读取当前文件内容
-            with open(current_file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            # 检查并复制GameUserSettings.ini
+            if os.path.exists(current_file_path1):
+                with open(current_file_path1, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                with open(new_file_path1, 'w', encoding='utf-8') as f:
+                    f.write(content)
 
-            # 写入新文件
-            with open(new_file_path, 'w', encoding='utf-8') as f:
-                f.write(content)
+            # 检查并复制Game.ini
+            if os.path.exists(current_file_path2):
+                with open(current_file_path2, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                with open(new_file_path2, 'w', encoding='utf-8') as f:
+                    f.write(content)
 
             # 6. 更新下拉框并选中新文件
             self.__load_config_list()
@@ -121,13 +130,26 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
     def __load_config_list(self):
         """加载所有配置文件列表到下拉框(Load all config files to dropdown)"""
         self.wc_choose_config.clear()
-        config_dir = "config/game_settings"
+        config_dir1 = "config/game_settings"
+        config_dir2 = "config/game_settings/game_ini"
 
-        if os.path.exists(config_dir):
-            for file in os.listdir(config_dir):
+        config_names = set()
+
+        # 加载GameUserSettings.ini配置
+        if os.path.exists(config_dir1):
+            for file in os.listdir(config_dir1):
                 if file.endswith(".ini"):
-                    config_name = file[:-4]  # 去掉.ini后缀(remove .ini suffix)
-                    self.wc_choose_config.addItem(config_name)
+                    config_names.add(file[:-4])  # 去掉.ini后缀(remove .ini suffix)
+
+        # 加载Game.ini配置
+        if os.path.exists(config_dir2):
+            for file in os.listdir(config_dir2):
+                if file.endswith(".ini"):
+                    config_names.add(file[:-4])  # 去掉.ini后缀(remove .ini suffix)
+
+        # 添加到下拉框
+        for name in sorted(config_names):
+            self.wc_choose_config.addItem(name)
 
         # 设置当前选中项(Set current selection)
         index = self.wc_choose_config.findText(self.current_config)
@@ -138,14 +160,23 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
         """加载当前选中的配置文件数据到表格(Load selected config data to table)"""
         # 先清空表格
         self.wc_show_world_setting.setRowCount(0)
+
+        # 加载GameUserSettings.ini数据
+        self.__load_single_config_data(ins_game_setting, "GameUserSettings.ini")
+
+        # 加载Game.ini数据
+        self.__load_single_config_data(ins_game_ini_setting, "Game.ini")
+
+    def __load_single_config_data(self, config_instance, config_file_name):
+        """加载单个配置文件的数据到表格(Load single config data to table)"""
         # 获取全部section
-        all_section = ins_game_setting.get_all_section()
+        all_section = config_instance.get_all_section()
         for section_name in all_section:
             if "_ARKToolTip" in section_name:
                 continue
             # 获取ServerSettings和Tip数据(Get ServerSettings and Tip data)
-            server_settings = ins_game_setting.get_section(section_name)
-            tips = ins_game_setting.get_section(f"{section_name}_ARKToolTip")
+            server_settings = config_instance.get_section(section_name)
+            tips = config_instance.get_section(f"{section_name}_ARKToolTip")
 
             # 如果ServerSettings为空，则不显示任何内容
             if not server_settings:
@@ -161,25 +192,30 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
                 row_position = self.wc_show_world_setting.rowCount()
                 self.wc_show_world_setting.insertRow(row_position)
 
+                # 配置文件(Config File)
+                config_item = QTableWidgetItem(config_file_name)
+                config_item.setTextAlignment(Qt.AlignLeft)
+                self.wc_show_world_setting.setItem(row_position, 0, config_item)
+
                 # 归属项(Section)
                 section_item = QTableWidgetItem(section_name)
                 section_item.setTextAlignment(Qt.AlignLeft)
-                self.wc_show_world_setting.setItem(row_position, 0, section_item)
+                self.wc_show_world_setting.setItem(row_position, 1, section_item)
 
                 # 配置项(Key)
                 key_item = QTableWidgetItem(key)
                 key_item.setTextAlignment(Qt.AlignLeft)
-                self.wc_show_world_setting.setItem(row_position, 1, key_item)
+                self.wc_show_world_setting.setItem(row_position, 2, key_item)
 
                 # 说明(Description)
                 tip_item = QTableWidgetItem(tips.get(key, ""))
                 tip_item.setTextAlignment(Qt.AlignLeft)
-                self.wc_show_world_setting.setItem(row_position, 2, tip_item)
+                self.wc_show_world_setting.setItem(row_position, 3, tip_item)
 
                 # 值(Value)
                 value_item = QTableWidgetItem(value)
                 value_item.setTextAlignment(Qt.AlignLeft)
-                self.wc_show_world_setting.setItem(row_position, 3, value_item)
+                self.wc_show_world_setting.setItem(row_position, 4, value_item)
 
     def __on_config_changed(self, config_name):
         """当下拉框选择改变时(When dropdown selection changes)"""
@@ -187,6 +223,7 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
             self.current_config = config_name
             # 切换配置文件路径
             ins_game_setting.change_config_path(config_name)
+            ins_game_ini_setting.change_config_path(config_name)
             # 重置表格
             self.wc_show_world_setting.setRowCount(0)
             # 重新加载数据
@@ -209,8 +246,9 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
                 return
 
             # 检查是否已存在(Check if already exists)
-            file_path = f"config/game_settings/{new_name}.ini"
-            if os.path.exists(file_path):
+            file_path1 = f"config/game_settings/{new_name}.ini"
+            file_path2 = f"config/game_settings/game_ini/{new_name}.ini"
+            if os.path.exists(file_path1) or os.path.exists(file_path2):
                 self.message_box(
                     f"配置 {new_name} 已存在!\n(Config {new_name} already exists!)"
                 )
@@ -218,9 +256,15 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
 
             # 创建空文件(Create empty file)
             try:
+                # 创建GameUserSettings.ini
                 os.makedirs("config/game_settings", exist_ok=True)
-                with open(file_path, 'w') as f:
-                    f.write("[ServerSettings]\n[Tip]\n")
+                with open(file_path1, 'w') as f:
+                    f.write("[ServerSettings]\n[ServerSettings_ARKToolTip]\n")
+
+                # 创建Game.ini
+                os.makedirs("config/game_settings/game_ini", exist_ok=True)
+                with open(file_path2, 'w') as f:
+                    f.write("[ServerSettings]\n[ServerSettings_ARKToolTip]\n")
 
                 # 更新下拉框并选中新文件(Update dropdown and select new file)
                 self.__load_config_list()
@@ -243,26 +287,42 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
     def __on_save_changes(self):
         """保存表格中的修改到当前配置文件(Save table changes to current config)"""
         try:
-            server_settings = {}
-            tips = {}
+            game_user_settings = {}
+            game_ini_settings = {}
+            game_user_tips = {}
+            game_ini_tips = {}
 
             # 收集表格中的数据(Collect data from table)
             for row in range(self.wc_show_world_setting.rowCount()):
-                section = self.wc_show_world_setting.item(row, 0).text()
-                key = self.wc_show_world_setting.item(row, 1).text()
-                tip = self.wc_show_world_setting.item(row, 2).text()
-                value = self.wc_show_world_setting.item(row, 3).text()
+                config_file = self.wc_show_world_setting.item(row, 0).text()
+                section = self.wc_show_world_setting.item(row, 1).text()
+                key = self.wc_show_world_setting.item(row, 2).text()
+                tip = self.wc_show_world_setting.item(row, 3).text()
+                value = self.wc_show_world_setting.item(row, 4).text()
 
-                server_settings.setdefault(section, {})
-                tips.setdefault(f"{section}_ARKToolTip", {})
+                if config_file == "GameUserSettings.ini":
+                    game_user_settings.setdefault(section, {})
+                    game_user_tips.setdefault(f"{section}_ARKToolTip", {})
+                    game_user_settings[section][key] = value
+                    game_user_tips[f"{section}_ARKToolTip"][key] = tip
+                elif config_file == "Game.ini":
+                    game_ini_settings.setdefault(section, {})
+                    game_ini_tips.setdefault(f"{section}_ARKToolTip", {})
+                    game_ini_settings[section][key] = value
+                    game_ini_tips[f"{section}_ARKToolTip"][key] = tip
+                else:
+                    self.message_box("只能编辑GameUserSettings.ini或Game.ini文件，请检查你的第一列。(You can only edit the GameUserSettings.ini or Game.ini files. Please check your first column.)")
+                    return
 
-                server_settings[section][key] = value
-                tips[f"{section}_ARKToolTip"][key] = tip
+            # 更新GameUserSettings.ini
+            for section in game_user_settings.keys():
+                ins_game_setting.update_section(section, game_user_settings[section])
+                ins_game_setting.update_section(f"{section}_ARKToolTip", game_user_tips[f"{section}_ARKToolTip"])
 
-            for section in server_settings.keys():
-                # 更新到配置(Update to config)
-                ins_game_setting.update_section(section, server_settings[section])
-                ins_game_setting.update_section(f"{section}_ARKToolTip", tips[f"{section}_ARKToolTip"])
+            # 更新Game.ini
+            for section in game_ini_settings.keys():
+                ins_game_ini_setting.update_section(section, game_ini_settings[section])
+                ins_game_ini_setting.update_section(f"{section}_ARKToolTip", game_ini_tips[f"{section}_ARKToolTip"])
 
             self.message_box(
                 "配置已保存!\n(Config saved successfully!)"
@@ -278,25 +338,30 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
         row_position = self.wc_show_world_setting.rowCount()
         self.wc_show_world_setting.insertRow(row_position)
 
+        # 配置文件(Config File)
+        config_item = QTableWidgetItem("GameUserSettings.ini")
+        config_item.setTextAlignment(Qt.AlignLeft)
+        self.wc_show_world_setting.setItem(row_position, 0, config_item)
+
         # 归属项(Section)
         section_item = QTableWidgetItem("")
         section_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 0, section_item)
+        self.wc_show_world_setting.setItem(row_position, 1, section_item)
 
         # 配置项(Key)
         key_item = QTableWidgetItem("")
         key_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 1, key_item)
+        self.wc_show_world_setting.setItem(row_position, 2, key_item)
 
         # 说明(Description)
         tip_item = QTableWidgetItem("")
         tip_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 2, tip_item)
+        self.wc_show_world_setting.setItem(row_position, 3, tip_item)
 
         # 值(Value)
         value_item = QTableWidgetItem("")
         value_item.setTextAlignment(Qt.AlignLeft)
-        self.wc_show_world_setting.setItem(row_position, 3, value_item)
+        self.wc_show_world_setting.setItem(row_position, 4, value_item)
 
         # 滚动到最后一行(Scroll to bottom)
         self.wc_show_world_setting.scrollToBottom()
@@ -316,14 +381,20 @@ class MainPage_WorldConfigSet(BasePage, Ui_MainPage):
                 "每次只能删除一行!\n(Can only delete one row at a time!)"
             )
             return
+
         row = selected_rows[0].row()
-        # 获取section和key
-        section = self.wc_show_world_setting.item(row, 0).text()
-        key = self.wc_show_world_setting.item(row, 1).text()
-        # tip
+        # 获取配置文件和section、key
+        config_file = self.wc_show_world_setting.item(row, 0).text()
+        section = self.wc_show_world_setting.item(row, 1).text()
+        key = self.wc_show_world_setting.item(row, 2).text()
         tip_section = f"{section}_ARKToolTip"
-        # 删除
-        ins_game_setting.delete(section, key)
-        ins_game_setting.delete(tip_section, key)
+
+        # 根据配置文件类型删除
+        if config_file == "GameUserSettings.ini":
+            ins_game_setting.delete(section, key)
+            ins_game_setting.delete(tip_section, key)
+        elif config_file == "Game.ini":
+            ins_game_ini_setting.delete(section, key)
+            ins_game_ini_setting.delete(tip_section, key)
 
         self.wc_show_world_setting.removeRow(row)

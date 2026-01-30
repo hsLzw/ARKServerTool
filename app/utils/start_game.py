@@ -6,7 +6,7 @@ import psutil
 from typing import Dict, Any, Optional, Tuple
 from pathlib import Path
 
-from app.models.ini_settings import ins_server_setting, ins_game_setting
+from app.models.ini_settings import ins_server_setting, ins_game_setting, ins_game_ini_setting
 from app.models.json_setting import ins_mods_setting, ins_world_info
 from app.models.log_data import ins_tool_logger
 
@@ -495,38 +495,100 @@ class OpenServer:
         )
 
     @classmethod
+    def _get_server_game_settings_file(cls) -> str:
+        """获取服务器配置文件路径"""
+        return os.path.join(
+            ins_server_setting.root_path,
+            "ShooterGame", "Saved", "Config", "WindowsServer", "Game.ini"
+        )
+
+    @classmethod
     def _write_game_user_settings(cls) -> bool:
-        '''将非serversettings的模组内容写入Config'''
+        '''将非serversettings的模组内容写入Config
+        Write non-serversettings mod content to Config'''
+        # 处理GameUserSettings.ini
         settings_file = cls._get_server_settings_file()
-        if not os.path.exists(settings_file):
-            return False
+        game_file = cls._get_server_game_settings_file()
 
-        config = configparser.ConfigParser(strict=False)
-        config.optionxform = str
+        success = False
+
+        # 写入GameUserSettings.ini
+        cls._log("正在写入GameUserSettings.ini部分配置(Writing configuration for GameUserSettings.ini section...)...")
         if os.path.exists(settings_file):
-            with open(settings_file, 'r', encoding='utf-8') as f:
-                config.read_file(f)
+            try:
+                config = configparser.ConfigParser(strict=False)
+                config.optionxform = str
+                with open(settings_file, 'r', encoding='utf-8') as f:
+                    config.read_file(f)
 
-        all_section = ins_game_setting.get_all_section()
-        for section_name in all_section:
-            if "_ARKToolTip" in section_name:
-                continue
-            if section_name == "ServerSettings":
-                continue
+                all_section = ins_game_setting.get_all_section()
+                for section_name in all_section:
+                    if "_ARKToolTip" in section_name:
+                        continue
+                    if section_name == "ServerSettings":
+                        continue
 
-            section_data = ins_game_setting.get_section(section_name)
-            if not section_data:
-                continue
+                    section_data = ins_game_setting.get_section(section_name)
+                    if not section_data:
+                        continue
 
-            if not config.has_section(section_name):
-                config.add_section(section_name)
+                    if not config.has_section(section_name):
+                        config.add_section(section_name)
 
-            for key, value in section_data.items():
-                config[section_name][key] = value
+                    for key, value in section_data.items():
+                        config[section_name][key] = value
 
-        with open(settings_file, 'w', encoding="utf-8") as f:
-            config.write(f)
-        return True
+                with open(settings_file, 'w', encoding="utf-8") as f:
+                    config.write(f)
+                success = True
+            except Exception as e:
+                cls._log(f"写入GameUserSettings.ini失败(Failed to write GameUserSettings.ini): {str(e)}")
+
+        # 处理Game.ini
+        cls._log("正在写入Game.ini部分配置(Writing configuration for Game.ini section...)...")
+        try:
+            config = configparser.ConfigParser(strict=False)
+            config.optionxform = str
+
+            # 如果文件存在则读取现有内容
+            if os.path.exists(game_file):
+                with open(game_file, 'r', encoding='utf-8') as f:
+                    config.read_file(f)
+
+            # 写入Game.ini配置
+            all_section = ins_game_ini_setting.get_all_section()
+            has_changes = False
+
+            for section_name in all_section:
+                if "_ARKToolTip" in section_name:
+                    continue
+
+                section_data = ins_game_ini_setting.get_section(section_name)
+                if not section_data:
+                    continue
+
+                if not config.has_section(section_name):
+                    config.add_section(section_name)
+                    has_changes = True
+
+                for key, value in section_data.items():
+                    if config.get(section_name, key, fallback=None) != value:
+                        config[section_name][key] = value
+                        has_changes = True
+
+            # 只有有变更或文件不存在时才写入
+            if has_changes or not os.path.exists(game_file):
+                # 确保目录存在
+                os.makedirs(os.path.dirname(game_file), exist_ok=True)
+
+                with open(game_file, 'w', encoding="utf-8") as f:
+                    config.write(f)
+                success = True
+
+        except Exception as e:
+            cls._log(f"写入Game.ini失败(Failed to write Game.ini): {str(e)}")
+
+        return success
 
     @classmethod
     def _build_server_command(cls, world_id: str, world_data: Dict[str, Any], server_exe: str) -> str:
